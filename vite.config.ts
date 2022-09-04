@@ -5,6 +5,7 @@ import * as path from 'path';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
 import IconsResolver from 'unplugin-icons/resolver';
+import { VarletUIResolver } from 'unplugin-vue-components/resolvers';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -51,6 +52,7 @@ export default defineConfig({
         IconsResolver({
           prefix: 'icon',
         }),
+        VarletUIResolver(),
       ],
       dts: 'src/components.d.ts',
     }),

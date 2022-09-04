@@ -8,14 +8,18 @@ declare module '*.vue' {
 }
 
 interface ImportMetaEnv extends Readonly<Record<string, string>> {
-  readonly VITE_APP_DEV: string;
-  readonly VITE_APP_TITLE: string;
-  readonly VITE_APP_ENV: string;
-  readonly VITE_APP_SSO_KEY: string;
-  readonly VITE_APP_CORE_URL: string;
-  readonly VITE_APP_SSO_DOMAIN: string;
+  readonly V_DEV: string;
+  readonly V_TITLE: string;
+  readonly V_ENV: string;
+  readonly V_SSO_KEY: string;
+  readonly V_BASE_URL: string;
+  readonly V_SSO_DOMAIN: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
+}
+
+interface Window {
+  ethereum: any;
 }

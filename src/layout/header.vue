@@ -1,49 +1,164 @@
 <template>
-  <header class="header sticky top-0 flex h-20 items-center justify-between px-10">
-    <div></div>
-    <div>
-      <button class="nav-btn" @click="themeAni">
+  <header class="header sticky top-0 flex h-20 items-center justify-between px-4 md:px-10">
+    <div class="bar-title pl-2 md:pl-4">
+      {{ route.meta.barTitle ?? route.name }}
+    </div>
+
+    <div class="flex pr-2 md:pr-4">
+      <div
+        v-if="isConnect && address"
+        class="min-w-10 mr-2 h-10 overflow-hidden sm:mr-4 sm:overflow-auto"
+      >
+        <div
+          class="h-10 w-10 rounded-full bg-skin-400 p-2 text-center dark:bg-skin-700 sm:h-10 sm:w-auto sm:p-2 sm:text-left sm:dark:bg-skin-900"
+        >
+          <icon-cryptocurrency:eth
+            v-if="network.chain == 1"
+            class="text-2xl leading-10 sm:text-2xl"
+          />
+          <icon-cryptocurrency:bnb
+            v-if="network.chain == 56"
+            class="text-2xl leading-10 sm:text-2xl"
+          />
+          <span class="ml-2 hidden align-middle sm:inline">{{ network?.name }}</span>
+        </div>
+      </div>
+
+      <div
+        :class="
+          'relative mr-2 sm:mr-4 ' +
+          (!isConnect || 'connected flex  items-center py-1 px-0.5 text-base-11 dark:text-base-1')
+        "
+      >
+        <div
+          class="absolute -z-10 h-full w-full rounded-full bg-skin-400 opacity-0 dark:bg-skin-900 sm:opacity-100"
+        />
+        <div v-if="isConnect && address" class="m-w-4 mx-2 ml-3 hidden h-6 leading-6 sm:block">
+          {{ balance == null ? '···' : `${balance} ${network.symbol}` }}
+        </div>
+        <button
+          :loading="false"
+          class="connect-btn"
+          :disabled="isConnect"
+          size="large"
+          @click="connectMetaMask"
+        >
+          {{ isConnect ? addressFilter(address) : 'Connect' }}
+        </button>
+      </div>
+      <a class="mr-2 block leading-8 text-skin-500 dark:text-skin-400" @click="toggleDark()">
         <icon-carbon-sun v-if="!isDark" class="h-6 w-6" />
         <icon-carbon-moon v-else class="h-6 w-6" />
-      </button>
-      <button class="nav-btn ml-2 text-center" @click="toggleLocale()">
-        <icon-carbon-language class="h-6 w-6" />
-      </button>
-      <a href="http://soulfree.cn" target="_blank" class="ml-2 text-center">
-        <button class="nav-btn">
-          <icon-mdi:blogger class="h-6 w-6" />
-        </button>
       </a>
-      <a href="https://github.com/AxyLm/vite-taicu" target="_blank" class="ml-2 text-center">
-        <button class="nav-btn">
+      <a href="https://github.com/AxyLm/vite-web3" target="_blank" class="">
+        <button
+          class="mr-2 hidden text-center leading-8 text-skin-500 dark:text-skin-400 sm:mr-4 sm:block"
+        >
           <icon-carbon:logo-github class="h-6 w-6" />
         </button>
       </a>
     </div>
   </header>
 </template>
-<script setup lang="ts">
-  import { isDark } from '~/composables';
-  // import { useI18n } from "vue-i18n";
-  import { useI18n, useThemeChang } from '~/composables';
-  const { t, toggleLocale } = useI18n();
 
-  const { themeAni } = useThemeChang(isDark);
-</script>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { ethers } from 'ethers';
+  import { mapState } from 'pinia';
+  import { defineComponent, ref, reactive, computed } from 'vue';
+  import { useRoute } from 'vue-router';
+  import { isDark, toggleDark } from '~/composables';
+  import { useWeb3Store } from '~/stores/web3';
+  import { provider, setProvider, netWorkInfo } from '~/web3';
+
   export default defineComponent({
-    name: 'LayoutHeader',
+    name: 'AppBar',
+    computed: {
+      ...mapState(useWeb3Store, ['address', 'isConnect', 'balance', 'network']),
+      // symbol() {
+      //   const { network } = useWeb3Store();
+      //   const symbol = network.symbol?.toLocaleLowerCase();
+      //   if (symbol) {
+      //     // eslint-disable-next-line @typescript-eslint/no-var-requires
+      //     const coin = require(`~icons/cryptocurrency/${symbol}`);
+      //     return coin;
+      //   } else {
+      //     return require('~icons/cryptocurrency/eth');
+      //   }
+      // },
+    },
+    setup() {
+      const route = useRoute();
+
+      const { connectWallet, walletInfo, ethereumInstalled, chainId } = useWeb3Store();
+      const { Web3Provider } = ethers.providers;
+
+      const connectMetaMask = async () => {
+        const { address } = walletInfo;
+        if (!ethereumInstalled) return alert('MetaMask is not install');
+        if (address) return;
+        if (!provider) {
+          setProvider(new Web3Provider(window.ethereum));
+        } else {
+          // 请求访问钱包
+          const accounts = await provider.send('eth_requestAccounts', []).catch((e) => {
+            console.log(e);
+          });
+          if (accounts.length) {
+            const [account] = accounts;
+            console.log(provider._network);
+            connectWallet(account, provider._network.chainId);
+          }
+        }
+      };
+
+      const addressFilter = (adr?: string) => {
+        if (!adr || adr.length < 10) return;
+        adr = adr.toLocaleUpperCase();
+        return `${adr.substring(0, 6)}...${adr.substring(adr.length - 4, adr.length)}`;
+      };
+      return {
+        connectMetaMask,
+        addressFilter,
+        route,
+        meta: route.meta,
+        toggleDark,
+        isDark,
+      };
+    },
   });
 </script>
 <style lang="less" scoped>
   .header {
-    backdrop-filter: saturate(250%) blur(20px);
-    box-shadow: 0px 0px 25px 5px rgb(10 10 10 / 12%);
-    // @apply bg-base-1 dark:bg-base-13 bg-opacity-70 dark:bg-opacity-75 transition-colors delay-200;
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0px 0px 25px 5px rgb(10 10 10 / 12%) !important;
+    @apply text-base-13 dark:text-base-1;
+
+    .bar-title {
+      @apply font-bold text-base-13 dark:text-base-1;
+    }
   }
 
-  .nav-btn {
-    @apply w-8 text-center;
+  .dark {
+    .header {
+      background: rgba(40, 40, 40, 0.5) !important;
+      box-shadow: 0px 0px 25px 5px rgb(0 0 0 / 12%) !important;
+    }
+  }
+
+  .connect-btn {
+    @apply transition-colors;
+    @apply h-8 rounded-full px-2 font-normal dark:ring-offset-1;
+    @apply bg-skin-300 outline-skin-700  dark:bg-skin-600 dark:outline-skin-700;
+    @apply ring-skin-200 ring-offset-base-light hover:ring-2 active:bg-skin-300  dark:ring-skin-500 dark:ring-offset-base-dark;
+    @apply dark:ring-offset-skin-900 dark:active:bg-skin-700 dark:active:ring-skin-500;
+
+    @apply disabled:active:bg-skin-300  dark:disabled:active:bg-skin-600;
+  }
+
+  .connected {
+    .connect-btn {
+      // @apply h-10 py-2;
+    }
   }
 </style>

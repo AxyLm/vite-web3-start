@@ -1,15 +1,28 @@
 <template>
-  <router-view></router-view>
+  <!-- <router-view></router-view> -->
+  <Layout />
 </template>
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import Layout from '~/layout/index.vue';
 
+  export default defineComponent({
+    name: 'App',
+    components: {
+      Layout,
+    },
+  });
+</script>
 <style lang="less">
-  body {
-    @apply transition-colors;
+  body,
+  main#root {
+    @apply transition-colors  dark:bg-base-dark dark:text-base-2;
   }
-  #app {
+  main#root {
     font-family: Josefin Sans, sans-serif;
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply font-normal;
   }
 </style>
