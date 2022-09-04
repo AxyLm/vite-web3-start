@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" class="leading-tight">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/vite.svg" type="image/svg+xml" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>太簇</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style></style>
+    <script>
+      (function () {
+        const prefersDark =
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const setting = localStorage.getItem('vueuse-color-scheme') || 'auto';
+        if (setting === 'dark' || (prefersDark && setting !== 'light'))
+          document.documentElement.classList.toggle('dark', true);
+      })();
+    </script>
+  </head>
+
+  <body class="min-h-screen transition-colors dark:text-base-light">
+    <div
+      id="body-bg"
+      class="fixed -z-10 h-screen w-screen overflow-hidden bg-base-light text-base-dark transition-colors delay-300 dark:bg-base-dark"
+    >
+    </div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
