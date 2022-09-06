@@ -1,5 +1,6 @@
 export interface NetWorkConfig {
   chain: number;
+  networkId?: string | number;
   symbol: string;
   name: string;
   decimal?: number;
@@ -9,9 +10,17 @@ export interface NetWorkConfig {
 const netWorkInfo: NetWorkConfig[] = [
   {
     chain: 1,
+    networkId: 1,
     name: 'Ethereum',
     scan: 'https://cn.etherscan.com/',
     symbol: 'ETH',
+  },
+  // 以太坊经典
+  {
+    chain: 61,
+    networkId: 1,
+    name: 'Ethereum',
+    symbol: 'ETC',
   },
   {
     chain: 10,
@@ -21,7 +30,8 @@ const netWorkInfo: NetWorkConfig[] = [
   },
   {
     chain: 56,
-    name: 'BSC Mainet',
+    networkId: 56,
+    name: 'BNB Chain',
     scan: 'https://bscscan.com/',
     symbol: 'BNB',
   },

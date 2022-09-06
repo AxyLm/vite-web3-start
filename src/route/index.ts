@@ -1,9 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import '@varlet/ui/es/snackbar/style';
-import { useWeb3Store } from '~/stores/web3';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3 } from '~/web3/web3';
-import { provider } from '~/web3';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -35,22 +31,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _from) => {
-  const { connectWallet, isConnect } = useWeb3Store();
-  if (typeof window.ethereum !== 'undefined' && !isConnect) {
-    console.log('MetaMask is installed!');
-
-    const ethereum = window.ethereum;
-    const nerwork = await provider.ready;
-    const eth_accounts = await ethereum.request?.({
-      method: 'eth_accounts',
-    });
-    if (eth_accounts.length) {
-      const [address] = eth_accounts;
-      connectWallet(address, {
-        chain: nerwork.chainId,
-      });
-    }
-  }
+  // const { isConnect } = useWeb3Store();
+  // if (!isConnect) {
+  //   setProvider('MetaMask');
+  // }
 });
 
 declare module 'vue-router' {

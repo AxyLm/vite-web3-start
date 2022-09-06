@@ -62,59 +62,34 @@
 </template>
 
 <script lang="ts">
-  import { ethers } from 'ethers';
   import { mapState } from 'pinia';
-  import { defineComponent, ref, reactive, computed } from 'vue';
+  import { defineComponent } from 'vue';
   import { useRoute } from 'vue-router';
   import { isDark, toggleDark } from '~/composables';
   import { useWeb3Store } from '~/stores/web3';
-  import { provider, setProvider, netWorkInfo } from '~/web3';
+  import { connectWallet } from '~/web3';
 
   export default defineComponent({
     name: 'AppBar',
     computed: {
       ...mapState(useWeb3Store, ['address', 'isConnect', 'balance', 'network']),
-      // symbol() {
-      //   const { network } = useWeb3Store();
-      //   const symbol = network.symbol?.toLocaleLowerCase();
-      //   if (symbol) {
-      //     // eslint-disable-next-line @typescript-eslint/no-var-requires
-      //     const coin = require(`~icons/cryptocurrency/${symbol}`);
-      //     return coin;
-      //   } else {
-      //     return require('~icons/cryptocurrency/eth');
-      //   }
-      // },
     },
     setup() {
       const route = useRoute();
 
-      const { connectWallet, walletInfo, ethereumInstalled, chainId } = useWeb3Store();
-      const { Web3Provider } = ethers.providers;
-
       const connectMetaMask = async () => {
-        const { address } = walletInfo;
-        if (!ethereumInstalled) return alert('MetaMask is not install');
-        if (address) return;
-        if (!provider) {
-          setProvider(new Web3Provider(window.ethereum));
+        if (window.ethereum) {
+          connectWallet();
         } else {
-          // 请求访问钱包
-          const accounts = await provider.send('eth_requestAccounts', []).catch((e) => {
-            console.log(e);
-          });
-          if (accounts.length) {
-            const [account] = accounts;
-            console.log(provider._network);
-            connectWallet(account, provider._network.chainId);
-          }
+          alert('Install MetaMask for your');
+          window.open('https://metamask.io/download/');
         }
       };
 
       const addressFilter = (adr?: string) => {
         if (!adr || adr.length < 10) return;
         adr = adr.toLocaleUpperCase();
-        return `${adr.substring(0, 6)}...${adr.substring(adr.length - 4, adr.length)}`;
+        return `${adr.substring(0, 6)}...${adr.substring(adr.length - 3, adr.length)}`;
       };
       return {
         connectMetaMask,

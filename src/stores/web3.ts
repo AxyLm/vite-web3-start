@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { defineStore } from 'pinia';
-import { netWorkInfo, provider, NetWorkConfig } from '~/web3';
+import { netWorkInfo, NetWorkConfig, getProvider } from '~/web3';
 
 interface WalletInfo {
   address: string;
@@ -11,7 +11,6 @@ interface WalletInfo {
 interface Web3State {
   walletInfo: Partial<WalletInfo>;
   network: Partial<NetWorkConfig>;
-  ethereumInstalled: boolean;
 }
 
 export const useWeb3Store = defineStore('web3', {
@@ -25,8 +24,8 @@ export const useWeb3Store = defineStore('web3', {
         name: undefined,
         chain: undefined,
         symbol: undefined,
+        scan: undefined,
       },
-      ethereumInstalled: false,
     };
   },
   getters: {
@@ -48,48 +47,44 @@ export const useWeb3Store = defineStore('web3', {
     },
   },
   actions: {
-    connectWallet(
-      address: string,
-      _network?: (Partial<NetWorkConfig> & { chain: number }) | number,
-    ) {
-      this.ethereumInstalled = true;
-
-      let chain: number | undefined;
-      if (typeof _network === 'number' || !_network) {
-        chain = _network;
-      } else {
-        chain = _network.chain;
-      }
+    setConnectInfo(address?: string, chain?: string | number) {
       this.walletInfo.address = address;
-      if (address) {
+      if (typeof address === 'string') {
         this.updateBalance(address);
+      } else {
+        this.walletInfo.balance = undefined;
       }
-
       if (chain) {
-        this.chainChange(chain);
+        this.setChain(chain);
       }
-      // const { address, chainId } = option;
-      // !!address && (this.walletInfo.address = address);
-      // !!chainId && (this.walletInfo.chainId = chainId);
     },
-    async chainChange(chain?: number) {
-      const network = netWorkInfo.find((e) => e.chain == chain);
+    async setChain(chain: number | string) {
+      chain = Number(chain);
+      const network = netWorkInfo.find((e) => e.chain === chain);
       if (network) {
         this.network = network;
       } else {
-        await provider.ready;
+        const network = await getProvider().getNetwork();
         this.network = {
-          name: provider._network?.name ?? '',
-          chain: provider._network.chainId,
+          name: network.name ?? '',
+          chain: network.chainId,
           symbol: ' ',
         };
       }
     },
     async updateBalance(address: string) {
       this.walletInfo.balance = null;
-      const balance_big = await provider.getBalance(address);
+      const balance_big = await getProvider().getBalance(address);
       const balance = Number(ethers.utils.formatUnits(balance_big));
       this.walletInfo.balance = Math.floor(balance * 1e6) / 1e6;
+    },
+    async connectByProvider(provider: Web3Provider) {
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      this.walletInfo.address = address;
+      this.updateBalance(address);
+      const { chainId } = await provider.getNetwork();
+      this.setChain(chainId);
     },
   },
 });
