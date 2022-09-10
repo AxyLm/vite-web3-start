@@ -1,7 +1,7 @@
 <template>
   <header class="header sticky top-0 flex h-20 items-center justify-between px-4 md:px-10">
     <div class="bar-title pl-2 md:pl-4">
-      {{ $t(`${route.meta.barTitle}.bar_title`) ?? route.name }}
+      <template v-if="$route.meta.barTitle">{{ $t(`${$route.meta.barTitle}.bar_title`) }}</template>
     </div>
 
     <div class="flex pr-2 md:pr-4">
@@ -35,9 +35,12 @@
             'absolute top-0 left-0 -z-10 h-full w-full rounded-full bg-skin-400 opacity-0 dark:bg-skin-900 sm:opacity-100',
             isConnect || 'sm:opacity-0',
           ]"
-        />
+        ></div>
         <div v-if="isConnect" class="m-w-4 mx-2 ml-3 hidden h-6 leading-6 sm:block">
-          {{ balance == null ? '···' : `${balance} ${network.symbol}` }}
+          <span v-if="balance == null" class="text-md">
+            <icon-eos-icons:three-dots-loading />
+          </span>
+          <span v-else>{{ balance }} {{ network.symbol }}</span>
         </div>
         <button
           :loading="false"
@@ -100,8 +103,6 @@
       return {
         connectMetaMask,
         addressFilter,
-        route,
-        meta: route.meta,
         toggleDark,
         isDark,
       };

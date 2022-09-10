@@ -74,7 +74,12 @@ export const useWeb3Store = defineStore('web3', {
     },
     async updateBalance(address: string) {
       this.walletInfo.balance = null;
-      const balance_big = await getProvider().getBalance(address);
+      const balance_big = await getProvider()
+        .getBalance(address)
+        .catch((e) => {
+          console.warn(e);
+          return 0;
+        });
       const balance = Number(ethers.utils.formatUnits(balance_big));
       this.walletInfo.balance = Math.floor(balance * 1e6) / 1e6;
     },
