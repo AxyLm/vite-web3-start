@@ -21,7 +21,7 @@
   },
   "contributors": [],
   "scripts": {
-    "prebuild": "lint-staged && vue-tsc --noEmit ",
+    "prebuild": "vue-tsc --noEmit ",
     "build": "vite build",
     "clean": "rimraf dist node_modules",
     "dev": "vite",
@@ -73,6 +73,8 @@
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
+    "@iconify-json/material-symbols": "^1.1.16",
+    "@iconify-json/tabler": "^1.1.32",
     "@iconify/json": "^2.1.43",
     "@intlify/vite-plugin-vue-i18n": "^3.4.0",
     "@types/node": "^17.0.38",

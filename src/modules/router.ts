@@ -20,19 +20,30 @@ const routes: RouteRecordRaw[] = [
   {
     name: 'Layout',
     path: '/',
-    component: () => import('~/views/home/index.vue'),
-    meta: {
-      appBar: true,
-      barTitle: 'Home',
-    },
+    redirect: 'transfer',
   },
   {
-    name: 'perpetual',
-    path: '/perpetual',
-    component: () => import('~/views/perpetual/index.vue'),
+    name: 'Home',
+    path: '/home',
+    component: () => import('~/views/home/index.vue'),
     meta: {
-      appBar: true,
-      barTitle: 'Perpetual',
+      barTitle: 'home',
+    },
+  },
+  // {
+  //   name: 'perpetual',
+  //   path: '/perpetual',
+  //   component: () => import('~/views/perpetual/index.vue'),
+  //   meta: {
+  //     barTitle: 'terpetual',
+  //   },
+  // },
+  {
+    name: 'Transfer',
+    path: '/transfer',
+    component: () => import('~/views/transfer/index.vue'),
+    meta: {
+      barTitle: 'transfer',
     },
   },
   {

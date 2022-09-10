@@ -3,5 +3,24 @@ dark: Dark
 light: Light
 toggle: Toggle to {mode}
 
-home: Home
 about: About
+
+network: Network
+token: Token
+form: Form
+to: To
+balance: Balance
+
+coming_soon: Coming soon
+
+home:
+  bar_title: Home
+
+transfer:
+  bar_title: Transfer
+  confirm_btn: Confirm transfer
+  will_receive: You will receive
+  total_amount: Total amount
+
+perpetual:
+  bar_title: Perpetual

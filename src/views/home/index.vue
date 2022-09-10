@@ -3,9 +3,9 @@
     <!-- <h1 class="text-xl"> Home </h1> -->
 
     <h2>
-      <router-link to="perpetual">
+      <router-link to="transfer">
         <icon-ph:link-duotone />
-        Perpetual</router-link
+        Transfer</router-link
       >
     </h2>
   </div>

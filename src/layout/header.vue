@@ -1,7 +1,7 @@
 <template>
   <header class="header sticky top-0 flex h-20 items-center justify-between px-4 md:px-10">
     <div class="bar-title pl-2 md:pl-4">
-      {{ route.meta.barTitle ?? route.name }}
+      {{ $t(`${route.meta.barTitle}.bar_title`) ?? route.name }}
     </div>
 
     <div class="flex pr-2 md:pr-4">
