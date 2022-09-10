@@ -1,6 +1,6 @@
 {
   "index.html": {
-    "file": "assets/index.085f2b18.js",
+    "file": "assets/index.62fe3d84.js",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
@@ -15,7 +15,7 @@
     ]
   },
   "src/views/home/index.vue": {
-    "file": "assets/index.5ac4ec7c.js",
+    "file": "assets/index.90c34207.js",
     "src": "src/views/home/index.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -23,7 +23,7 @@
     ]
   },
   "src/views/transfer/index.vue": {
-    "file": "assets/index.8e502d26.js",
+    "file": "assets/index.fcca100c.js",
     "src": "src/views/transfer/index.vue",
     "isDynamicEntry": true,
     "imports": [
