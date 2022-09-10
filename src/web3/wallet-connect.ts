@@ -32,7 +32,8 @@ async function connectWallet() {
   const accounts = await getProvider()
     .send('eth_requestAccounts', [])
     .catch((e) => {
-      console.log(e);
+      console.log('[MetaMask] ', e?.message);
+      return [];
     });
   if (accounts.length) {
     const { setConnectInfo } = useWeb3Store();

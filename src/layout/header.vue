@@ -25,15 +25,18 @@
       </div>
 
       <div
-        :class="
-          'relative mr-2 sm:mr-4 ' +
-          (!isConnect || 'connected flex  items-center py-1 px-0.5 text-base-11 dark:text-base-1')
-        "
+        :class="[
+          'relative mr-2 py-1 px-1 sm:mr-4',
+          !isConnect || 'connected flex items-center  px-0.5 text-base-11 dark:text-base-1',
+        ]"
       >
         <div
-          class="absolute -z-10 h-full w-full rounded-full bg-skin-400 opacity-0 dark:bg-skin-900 sm:opacity-100"
+          :class="[
+            'absolute top-0 left-0 -z-10 h-full w-full rounded-full bg-skin-400 opacity-0 dark:bg-skin-900 sm:opacity-100',
+            isConnect || 'sm:opacity-0',
+          ]"
         />
-        <div v-if="isConnect && address" class="m-w-4 mx-2 ml-3 hidden h-6 leading-6 sm:block">
+        <div v-if="isConnect" class="m-w-4 mx-2 ml-3 hidden h-6 leading-6 sm:block">
           {{ balance == null ? '···' : `${balance} ${network.symbol}` }}
         </div>
         <button
@@ -46,15 +49,16 @@
           {{ isConnect ? addressFilter(address) : 'Connect' }}
         </button>
       </div>
-      <a class="mr-2 block leading-8 text-skin-500 dark:text-skin-400" @click="toggleDark()">
-        <icon-carbon-sun v-if="!isDark" class="h-6 w-6" />
-        <icon-carbon-moon v-else class="h-6 w-6" />
-      </a>
+      <button
+        class="mr-2 cursor-pointer leading-8 text-skin-600 dark:text-skin-500"
+        @click="toggleDark()"
+      >
+        <icon-carbon-sun v-if="!isDark" class="h-10 w-6" />
+        <icon-carbon-moon v-else class="h-10 w-6" />
+      </button>
       <a href="https://github.com/AxyLm/vite-web3" target="_blank" class="">
-        <button
-          class="mr-2 hidden text-center leading-8 text-skin-500 dark:text-skin-400 sm:mr-4 sm:block"
-        >
-          <icon-carbon:logo-github class="h-6 w-6" />
+        <button class="mr-2 hidden text-center text-skin-600 dark:text-skin-500 sm:mr-4 sm:block">
+          <icon-carbon:logo-github class="h-10 w-6" />
         </button>
       </a>
     </div>
@@ -81,8 +85,10 @@
         if (window.ethereum) {
           connectWallet();
         } else {
-          alert('Install MetaMask for your');
-          window.open('https://metamask.io/download/');
+          const isConfirm = window.confirm('Not fount MetaMask, Do you want to install it?');
+          if (isConfirm) {
+            window.open('https://metamask.io/download/');
+          }
         }
       };
 
@@ -133,7 +139,7 @@
 
   .connected {
     .connect-btn {
-      // @apply h-10 py-2;
+      @apply cursor-text select-text hover:ring-0;
     }
   }
 </style>
