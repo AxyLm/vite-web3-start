@@ -104,7 +104,7 @@
     "unplugin-auto-import": "^0.7.1",
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.5",
-    "vite": "^2.9.9",
+    "vite": "^2.9.13",
     "vue-eslint-parser": "^9.0.3",
     "vue-tsc": "^0.34.7"
   },
