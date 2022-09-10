@@ -25,4 +25,8 @@
     -moz-osx-font-smoothing: grayscale;
     @apply font-normal;
   }
+
+  .dark main#root {
+    background-image: url(~/assets/svg/bg-stars.svg);
+  }
 </style>
