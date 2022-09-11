@@ -36,10 +36,17 @@
 
         if (ethereum.isConnected()) {
           web3Store.setConnectInfo(ethereum.selectedAddress, ethereum.chainId);
+        } else {
+          const handConnect = async (connectInfo: { chainId: string }) => {
+            const accounts: string[] = await ethereum.request({ method: 'eth_accounts' });
+            web3Store.setConnectInfo(accounts[0], connectInfo.chainId);
+            ethereum.removeListener('connect', handConnect);
+          };
+          ethereum.on('connect', handConnect);
         }
 
+        // listener accounts，chain
         ethereum.on('accountsChanged', ([account]: string[]) => {
-          console.log('accountsChanged', account);
           if (account) {
             web3Store.setConnectInfo(account);
           } else {
@@ -47,7 +54,6 @@
           }
         });
         ethereum.on('chainChanged', (_chainId: number) => {
-          console.log('chainChanged,', _chainId);
           setProvider('MetaMask');
           web3Store.setConnectInfo(ethereum.selectedAddress, _chainId);
         });
