@@ -5,6 +5,7 @@ export interface NetWorkConfig {
   name: string;
   decimal?: number;
   scan?: string;
+  icon?: string;
 }
 
 const netWorkInfo: NetWorkConfig[] = [
@@ -14,6 +15,7 @@ const netWorkInfo: NetWorkConfig[] = [
     name: 'Ethereum',
     scan: 'https://cn.etherscan.com/',
     symbol: 'ETH',
+    // icon: require('~/assets/networks/ethereum.svg'),
   },
   // 以太坊经典
   {

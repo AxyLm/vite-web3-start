@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { isDark } from '~/composables';
   import { useI18n, useThemeChang } from '~/composables';
-  const { t, toggleLocale } = useI18n();
+  const { toggleLocale } = useI18n();
 
   const { themeAni } = useThemeChang(isDark);
   const str = '</>';
@@ -16,12 +16,12 @@
   <div class="mt-10 text-center text-lg">
     <router-link to="/home" class="mx-4" active-class="font-normal">
       <span
-        ><sup>{{ str }}</sup> {{ t('home') }}</span
+        ><sup>{{ str }}</sup> {{ $t('home') }}</span
       >
     </router-link>
     <router-link to="/about" class="mx-4" active-class="font-normal">
       <span>
-        <sup class="sub">{{ str }}</sup> {{ t('about') }}</span
+        <sup class="sub">{{ str }}</sup> {{ $t('about') }}</span
       >
     </router-link>
   </div>

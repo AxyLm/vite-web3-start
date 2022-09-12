@@ -12,15 +12,10 @@
         <div
           class="h-10 w-10 rounded-full bg-skin-400 p-2 text-center dark:bg-skin-700 sm:h-10 sm:w-auto sm:p-2 sm:text-left sm:dark:bg-skin-900"
         >
-          <icon-cryptocurrency:eth
-            v-if="network.chain == 1"
-            class="text-2xl leading-10 sm:text-2xl"
-          />
-          <icon-cryptocurrency:bnb
-            v-if="network.chain == 56"
-            class="text-2xl leading-10 sm:text-2xl"
-          />
-          <span class="ml-2 hidden align-middle sm:inline">{{ network?.name }}</span>
+          <component
+            :is="networkIconKey ? networkIcons[networkIconKey] : MaterialSymbolsBlock"
+          ></component>
+          <span class="ml-2 hidden sm:inline">{{ network?.name }}</span>
         </div>
       </div>
 
@@ -70,20 +65,36 @@
 
 <script lang="ts">
   import { mapState } from 'pinia';
-  import { defineComponent } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { defineComponent, FunctionalComponent, ref } from 'vue';
   import { isDark, toggleDark } from '~/composables';
   import { useWeb3Store } from '~/stores/web3';
   import { connectWallet } from '~/web3';
+
+  import IconBnb from '~icons/networks/bnb';
+  import IconEth from '~icons/networks/ethereum';
+
+  import MaterialSymbolsBlock from '~icons/material-symbols/block';
+
+  const networkIcons: {
+    [key in number]: FunctionalComponent;
+  } = {
+    1: IconEth,
+    56: IconBnb,
+  };
 
   export default defineComponent({
     name: 'AppBar',
     computed: {
       ...mapState(useWeb3Store, ['address', 'isConnect', 'balance', 'network']),
+      networkIconKey() {
+        const { chainId } = useWeb3Store();
+        if (chainId && networkIcons[chainId]) {
+          return chainId;
+        }
+        return undefined;
+      },
     },
     setup() {
-      const route = useRoute();
-
       const connectMetaMask = async () => {
         if (window.ethereum) {
           connectWallet();
@@ -100,11 +111,14 @@
         adr = adr.toLocaleUpperCase();
         return `${adr.substring(0, 6)}...${adr.substring(adr.length - 3, adr.length)}`;
       };
+
       return {
         connectMetaMask,
         addressFilter,
         toggleDark,
         isDark,
+        networkIcons,
+        MaterialSymbolsBlock,
       };
     },
   });

@@ -6,6 +6,7 @@ import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { VarletUIResolver } from 'unplugin-vue-components/resolvers';
+import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -46,6 +47,20 @@ export default defineConfig({
       defaultClass: 'icon', // Class names apply to icons
       autoInstall: true,
       compiler: 'vue3',
+      customCollections: {
+        coins: FileSystemIconLoader('./src/assets/coins', (svg) =>
+          svg.replace(/^<svg /, '<svg fill="currentColor" '),
+        ),
+        networks: FileSystemIconLoader('./src/assets/networks', (svg) =>
+          svg.replace(/^<svg /, '<svg fill="currentColor" '),
+        ),
+      },
+      iconCustomizer(collection, icon, props) {
+        // customize this icon in this collection
+        if (['coins', 'networks'].includes(collection)) {
+          props.class = 'icon h-6 w-6 inline align-text-bottom';
+        }
+      },
     }),
     Components({
       resolvers: [
