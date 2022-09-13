@@ -143,7 +143,7 @@
   }
 
   .connect-btn {
-    @apply transition-colors;
+    @apply transition-colors focus:outline-0;
     @apply h-8 rounded-full px-2 font-normal dark:ring-offset-1;
     @apply bg-skin-300 outline-skin-700  dark:bg-skin-600 dark:outline-skin-700;
     @apply ring-skin-200 ring-offset-base-light hover:ring-2 active:bg-skin-300  dark:ring-skin-500 dark:ring-offset-base-dark;

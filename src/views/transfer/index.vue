@@ -21,7 +21,7 @@
               <div class="text-xs text-base-6">{{ $t('network') }}</div>
               <div class="mt-1 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap">
                 <component :is="transferConfig.from.networkIcon"></component>
-                <span class="text-md ml-1">{{ transferConfig.from.network }}</span>
+                <span class="text-md ml-2">{{ transferConfig.from.network }}</span>
               </div>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <div class="text-xs text-base-6">{{ $t('network') }}</div>
               <div class="mt-1 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap">
                 <component :is="transferConfig.to.networkIcon"></component>
-                <span class="text-md ml-1">{{ transferConfig.to.network }}</span>
+                <span class="text-md ml-2">{{ transferConfig.to.network }}</span>
               </div>
             </div>
           </div>
@@ -76,13 +76,17 @@
         <button
           alt="Coming soon"
           :disabled="!isConnect"
-          class="mt-10 h-10 w-full rounded-xl bg-skin-300 text-center text-lg leading-10 disabled:hover:cursor-not-allowed dark:bg-skin-600 hover:dark:bg-skin-700 active:dark:bg-skin-800"
+          class="mt-10 h-10 w-full rounded-xl bg-skin-300 text-center text-lg disabled:hover:cursor-not-allowed dark:bg-skin-600 hover:dark:bg-skin-700 active:dark:bg-skin-800"
         >
           <span v-if="isConnect">
             {{ $t('transfer.confirm_btn') }}
             <span class="text-sm">({{ $t('coming_soon') }})</span>
           </span>
-          <span v-else> Please connect first <icon-material-symbols:turn-slight-right /> </span>
+          <span v-else>
+            Please connect first
+            <icon-ic:sharp-turn-slight-right class="hidden sm:inline" />
+            <icon-ic:baseline-turn-sharp-right class="inline sm:hidden" />
+          </span>
         </button>
       </div>
     </div>

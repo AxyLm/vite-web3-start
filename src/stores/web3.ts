@@ -56,6 +56,12 @@ export const useWeb3Store = defineStore('web3', {
       }
       if (chain) {
         this.setChain(chain);
+      } else {
+        getProvider()
+          ?.getNetwork()
+          .then((res) => {
+            this.setChain(res.chainId);
+          });
       }
     },
     async setChain(chain: number | string) {

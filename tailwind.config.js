@@ -10,6 +10,7 @@ module.exports = {
     'hover:opacity-100',
     'lg:text-right',
     'align-text-bottom',
+    'inline',
   ], // 将特定类列入安全列表 （no delete）
   darkMode: 'class', // or 'media' or 'class'
   theme: {

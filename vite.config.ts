@@ -43,8 +43,8 @@ export default defineConfig({
     }),
     Icons({
       scale: 1,
-      defaultStyle: 'display:inline', // Style apply to icons
-      defaultClass: 'icon', // Class names apply to icons
+      defaultStyle: '', // Style apply to icons
+      defaultClass: 'icon inline', // Class names apply to icons
       autoInstall: true,
       compiler: 'vue3',
       customCollections: {

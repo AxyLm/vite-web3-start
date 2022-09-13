@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: 'perpetual',
+    redirect: 'home',
   },
 ];
 
