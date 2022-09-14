@@ -34,16 +34,7 @@
       if (typeof ethereum !== 'undefined') {
         setProvider('MetaMask');
 
-        if (ethereum.isConnected()) {
-          web3Store.setConnectInfo(ethereum.selectedAddress, ethereum.chainId);
-        } else {
-          const handConnect = async (connectInfo: { chainId: string }) => {
-            const accounts: string[] = await ethereum.request({ method: 'eth_accounts' });
-            web3Store.setConnectInfo(accounts[0], connectInfo.chainId);
-            ethereum.removeListener('connect', handConnect);
-          };
-          ethereum.on('connect', handConnect);
-        }
+        web3Store.connectByProvider();
 
         // listener accounts，chain
         ethereum.on('accountsChanged', ([account]: string[]) => {
@@ -55,7 +46,7 @@
         });
         ethereum.on('chainChanged', (_chainId: number) => {
           setProvider('MetaMask');
-          web3Store.setConnectInfo(ethereum.selectedAddress, _chainId);
+          web3Store.connectByProvider();
         });
       }
     },
@@ -71,7 +62,6 @@
       .container {
         padding: 1rem;
         margin: 0 auto;
-        min-height: 100vh //calc(100vh - var(--app-bar-height));;
       }
     }
   }

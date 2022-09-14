@@ -3,8 +3,6 @@ dark: Dark
 light: Light
 toggle: Toggle to {mode}
 
-about: About
-
 network: Network
 token: Token
 form: Form
@@ -14,13 +12,7 @@ balance: Balance
 coming_soon: Coming soon
 
 home:
-  bar_title: Home
+  bar_title: Web3 Start
 
-transfer:
-  bar_title: Transfer
-  confirm_btn: Confirm transfer
-  will_receive: You will receive
-  total_amount: Total amount
-
-perpetual:
-  bar_title: Perpetual
+about:
+  bar_title: About

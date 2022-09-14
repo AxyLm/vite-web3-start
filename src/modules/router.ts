@@ -10,9 +10,7 @@ import { type App } from 'vue';
 declare module 'vue-router' {
   interface RouteMeta {
     appBar?: boolean;
-    tabBar?: boolean;
     batTitle?: string;
-    authorization?: boolean;
   }
 }
 
@@ -20,7 +18,7 @@ const routes: RouteRecordRaw[] = [
   {
     name: 'Layout',
     path: '/',
-    redirect: 'transfer',
+    redirect: 'home',
   },
   {
     name: 'Home',
@@ -30,20 +28,12 @@ const routes: RouteRecordRaw[] = [
       barTitle: 'home',
     },
   },
-  // {
-  //   name: 'perpetual',
-  //   path: '/perpetual',
-  //   component: () => import('~/views/perpetual/index.vue'),
-  //   meta: {
-  //     barTitle: 'terpetual',
-  //   },
-  // },
   {
-    name: 'Transfer',
-    path: '/transfer',
-    component: () => import('~/views/transfer/index.vue'),
+    name: 'About',
+    path: '/about',
+    component: () => import('~/views/about/index.vue'),
     meta: {
-      barTitle: 'transfer',
+      barTitle: 'about',
     },
   },
   {

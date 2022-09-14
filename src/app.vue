@@ -16,7 +16,7 @@
 <style lang="less">
   body,
   main#root {
-    @apply transition-colors  dark:bg-base-dark dark:text-base-2;
+    @apply w-screen  transition-colors dark:bg-base-dark dark:text-base-2;
   }
   main#root {
     font-family: Josefin Sans, sans-serif;
@@ -26,7 +26,10 @@
     @apply font-normal;
   }
 
-  .dark main#root {
-    background-image: url(~/assets/svg/bg-stars.svg);
+  .dark {
+    color-scheme: dark;
+    main#root {
+      background-image: url(~/assets/svg/bg-stars.svg);
+    }
   }
 </style>

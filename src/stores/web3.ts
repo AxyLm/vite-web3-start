@@ -89,9 +89,10 @@ export const useWeb3Store = defineStore('web3', {
       const balance = Number(ethers.utils.formatUnits(balance_big));
       this.walletInfo.balance = Math.floor(balance * 1e6) / 1e6;
     },
-    async connectByProvider(provider: Web3Provider) {
+    async connectByProvider(provider: Web3Provider = getProvider()) {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
+
       this.walletInfo.address = address;
       this.updateBalance(address);
       const { chainId } = await provider.getNetwork();

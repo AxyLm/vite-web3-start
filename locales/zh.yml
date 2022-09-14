@@ -4,5 +4,16 @@ dark: 暗夜
 light: 日间
 toggle: 切换到{mode}
 
-home: 首页
-about: 关于
+network: 网络
+token: 代币
+form: 来自
+to: 去
+balance: 余额
+
+coming_soon: 开发中.
+
+home:
+  bar_title: 起航 web3
+
+about:
+  bar_title: 关于

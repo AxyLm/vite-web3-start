@@ -1,7 +1,9 @@
 <template>
-  <header class="header sticky top-0 flex h-20 items-center justify-between px-4 md:px-10">
+  <header class="header sticky top-0 flex h-16 items-center justify-between px-4 sm:h-20 md:px-10">
     <div class="bar-title pl-2 md:pl-4">
-      <template v-if="$route.meta.barTitle">{{ $t(`${$route.meta.barTitle}.bar_title`) }}</template>
+      <template v-if="$route.meta.barTitle">
+        {{ $t(`${$route.meta.barTitle}.bar_title`) }}
+      </template>
     </div>
 
     <div class="flex pr-2 md:pr-4">
@@ -10,7 +12,7 @@
         class="min-w-10 mr-2 h-10 overflow-hidden sm:mr-4 sm:overflow-auto"
       >
         <div
-          class="h-10 w-10 rounded-full bg-skin-400 p-2 text-center dark:bg-skin-700 sm:h-10 sm:w-auto sm:p-2 sm:text-left sm:dark:bg-skin-900"
+          class="h-10 w-10 rounded-full bg-skin-500 p-2 text-center dark:bg-skin-700 sm:h-10 sm:w-auto sm:p-2 sm:text-left sm:dark:bg-skin-900"
         >
           <component
             :is="networkIconKey ? networkIcons[networkIconKey] : MaterialSymbolsBlock"
@@ -47,15 +49,15 @@
           {{ isConnect ? addressFilter(address) : 'Connect' }}
         </button>
       </div>
-      <button
+      <!-- <button
         class="mr-2 cursor-pointer leading-8 text-skin-600 dark:text-skin-500"
         @click="toggleDark()"
       >
         <icon-carbon-sun v-if="!isDark" class="h-10 w-6" />
         <icon-carbon-moon v-else class="h-10 w-6" />
-      </button>
-      <a href="https://github.com/AxyLm/vite-web3" target="_blank" class="">
-        <button class="mr-2 hidden text-center text-skin-600 dark:text-skin-500 sm:mr-4 sm:block">
+      </button> -->
+      <a href="https://github.com/AxyLm/vite-web3-start" target="_blank" class="">
+        <button class="mr-2 text-center text-skin-600 dark:text-skin-500 sm:mr-4">
           <icon-carbon:logo-github class="h-10 w-6" />
         </button>
       </a>
