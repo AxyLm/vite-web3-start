@@ -1,30 +1,30 @@
 {
   "index.html": {
-    "file": "assets/index.16a7efe6.js",
+    "file": "assets/index.1e46f99a.js",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
       "src/views/home/index.vue",
-      "src/views/transfer/index.vue"
+      "src/views/about/index.vue"
     ],
     "css": [
-      "assets/index.d271e25b.css"
+      "assets/index.d463e7e7.css"
     ],
     "assets": [
       "assets/bg-stars.01c8511c.svg"
     ]
   },
   "src/views/home/index.vue": {
-    "file": "assets/index.60b78b6e.js",
+    "file": "assets/index.40e23c57.js",
     "src": "src/views/home/index.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html"
     ]
   },
-  "src/views/transfer/index.vue": {
-    "file": "assets/index.6c0a207d.js",
-    "src": "src/views/transfer/index.vue",
+  "src/views/about/index.vue": {
+    "file": "assets/index.51d6005d.js",
+    "src": "src/views/about/index.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html"
