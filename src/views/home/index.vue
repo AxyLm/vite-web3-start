@@ -58,117 +58,23 @@
 <script lang="ts">
   import { isAddress } from '@ethersproject/address';
   import { JsonRpcProvider } from '@ethersproject/providers';
-  import { BigNumber, Contract, ethers } from 'ethers';
-  import { computed, nextTick, ref, watch } from 'vue';
+  import { BigNumber, ethers } from 'ethers';
+  import { defineComponent, ref, watch } from 'vue';
   import { useWeb3Store } from '~/stores/web3';
-  import { getProvider } from '~/web3';
+  import { getProvider, eth_ERC20, bsc_ERC20, TokenInfo } from '~/web3';
   import { createERC20 } from '~/web3/contracts/erc20';
 
-  interface Token {
-    name?: string;
-    symbol?: string;
-    decimals?: number;
-    address: string;
-    balance?: number | string | undefined | null;
-    contract?: Contract;
-  }
-
-  export default {
+  export default defineComponent({
     setup() {
       const store = useWeb3Store();
 
       const walletAddress = ref();
 
-      const defaultTokenList: (Token | string)[] = [
-        {
-          address: '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
-          symbol: 'BTCB',
-          name: 'BTCB Token',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-          symbol: 'ETH',
-          name: 'Ethereum Token',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-          symbol: 'WBNB',
-          name: 'Wrapped BNB',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
-          symbol: 'USDC',
-          name: 'USD Coin',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-          symbol: 'BUSD',
-          name: 'BUSD Token',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0xba2ae424d960c26247dd6c32edc70b295c744c43',
-          symbol: 'DOGE',
-          name: 'Dogecoin',
-          decimals: 8,
-          balance: undefined,
-        },
-        {
-          address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
-          symbol: 'DAI',
-          name: 'Dai Token',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0x3d6545b08693dae087e957cb1180ee38b9e3c25e',
-          symbol: 'ETC',
-          name: 'Ethereum Classic',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-          symbol: 'Cake',
-          name: 'PancakeSwap Token',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0x2859e4544c4bb03966803b044a93563bd2d0dd4d',
-          symbol: 'SHIB',
-          name: 'SHIBA INU',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0x1ce0c2827e2ef14d5c4f29a091d735a204794041',
-          symbol: 'AVAX',
-          name: 'Avalanche',
-          decimals: 18,
-          balance: undefined,
-        },
-        {
-          address: '0xbf5140a22578168fd562dccf235e5d43a02ce9b1',
-          symbol: 'UNI',
-          name: 'Uniswap',
-          decimals: 18,
-          balance: undefined,
-        },
-      ];
-
-      const TokenList = ref<Token[]>([]);
+      const TokenList = ref<TokenInfo[]>([]);
 
       const getTokenInfo = async () => {
+        const defaultTokenList: (TokenInfo | string)[] =
+          store.chainId === 56 ? bsc_ERC20 : eth_ERC20;
         const provider = getProvider() ?? new JsonRpcProvider('https://bsc-dataseed.binance.org');
         if (walletAddress.value && isAddress(walletAddress.value)) {
           TokenList.value = defaultTokenList.map((e) => {
@@ -192,7 +98,6 @@
               }),
               new Promise((resolve) =>
                 setTimeout(() => {
-                  console.log('timeout');
                   resolve(null);
                 }, 1000 * 5),
               ),
@@ -216,26 +121,16 @@
           getTokenInfo();
         });
       }
-      // watch(
-      //   address,
-      //   (value) => {
-      //     if (value && isAddress(value)) {
-      //       TokenList.value = defaultTokenList.map((e) => {
-      //         if (typeof e === 'string') return { address: e };
-      //         return e;
-      //       });
-      //       getTokenInfo(value);
-      //     }
-      //   },
-      //   {
-      //     // immediate: true,
-      //   },
-      // );
-
+      watch(store.$state, ({ walletInfo }) => {
+        if (walletInfo.address) {
+          walletAddress.value = walletInfo.address;
+          getTokenInfo();
+        }
+      });
       return {
         walletAddress,
         TokenList,
       };
     },
-  };
+  });
 </script>
