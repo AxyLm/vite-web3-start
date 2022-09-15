@@ -1,0 +1,1 @@
+import{_ as s,x as o,y as e,z as r,K as a}from"./index.036c74b8.js";const n={setup(){return{}}},c={class:"h-full text-center"},l=e("h1",{class:"text-xl"}," About ",-1);function _(t,p,i,u,d,f){return a(),o("div",c,[l,e("p",null,"hello: "+r(t.userStroe.name),1)])}var h=s(n,[["render",_]]);export{h as default};
