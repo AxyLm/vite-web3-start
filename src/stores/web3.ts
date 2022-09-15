@@ -6,6 +6,7 @@ import { netWorkInfo, NetWorkConfig, getProvider } from '~/web3';
 interface WalletInfo {
   address: string;
   balance: number | string | null;
+  walletType?: string;
 }
 
 interface Web3State {
@@ -19,6 +20,7 @@ export const useWeb3Store = defineStore('web3', {
       walletInfo: {
         address: undefined,
         balance: undefined,
+        walletType: undefined,
       },
       network: {
         name: undefined,
@@ -91,7 +93,7 @@ export const useWeb3Store = defineStore('web3', {
     },
     async connectByProvider(provider: Web3Provider = getProvider()) {
       const signer = provider.getSigner();
-      const address = await signer.getAddress();
+      const address = await signer?.getAddress();
 
       this.walletInfo.address = address;
       this.updateBalance(address);

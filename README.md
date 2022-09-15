@@ -10,8 +10,8 @@ A use Vue 3 + Typescript + Vite web3 Dapp start template, use metamask connect. 
 
 - [ ] wallet connect
   - [x] Metamask
-  - [ ] Coinbase Wallet
-  - [ ] Trust Wallet
+  - [x] Coinbase Wallet
+  - [x] TokenPocket
   - [ ] WalletConnect
   - [ ] more...
 - [ ] Support Network

@@ -32,7 +32,16 @@
 
       const ethereum = window.ethereum;
       if (typeof ethereum !== 'undefined') {
+        // setProvider('CoinbaseWallet');
         setProvider('MetaMask');
+
+        if (ethereum.isTokenPocket) {
+          web3Store.$state.walletInfo.walletType = 'TokenPocket';
+        } else if (ethereum?.selectedProvider?.isCoinbaseWallet) {
+          web3Store.$state.walletInfo.walletType = 'CoinbaseWallet';
+        } else if (ethereum.isMetaMask) {
+          web3Store.$state.walletInfo.walletType = 'MetaMask';
+        }
 
         web3Store.connectByProvider();
 
