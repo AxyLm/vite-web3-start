@@ -1,63 +1,28 @@
 <template>
-  <div class="layout h-full">
-    <div class="layout-wrap" :style="{}">
-      <app-bar />
-      <router-view class="container" />
+  <div class="layout max-h-screen overflow-y-auto overflow-x-hidden">
+    <div class="layout-wrap h-full" :style="{}">
+      <navigation />
+      <router-view v-slot="{ Component }" class="pb-22 container mx-auto mt-8 px-4 md:pb-14">
+        <component :is="Component" :key="accountConnected" />
+      </router-view>
     </div>
   </div>
 </template>
 <script lang="ts">
-  import { computed, defineComponent } from 'vue';
-  import AppBar from './header.vue';
-  import { useRoute } from 'vue-router';
-  import { useWeb3Store } from '~/stores/web3';
-  import { setProvider } from '~/web3';
-
+  import { mapState } from 'pinia';
+  import { defineComponent } from 'vue';
+  import useEthereumStore from '~/web3/hooks/useEthereumStore';
+  import navigation from './navigation.vue';
   export default defineComponent({
     name: 'Layout',
     components: {
-      AppBar,
+      navigation,
     },
-    setup() {
-      const route = useRoute();
-      const meta = computed(() => route.meta);
-
-      return {
-        route,
-        meta,
-      };
+    setup(props, ctx) {
+      return {};
     },
-    beforeCreate() {
-      const web3Store = useWeb3Store();
-
-      const ethereum = window.ethereum;
-      if (typeof ethereum !== 'undefined') {
-        // setProvider('CoinbaseWallet');
-        setProvider('MetaMask');
-
-        if (ethereum.isTokenPocket) {
-          web3Store.$state.walletInfo.walletType = 'TokenPocket';
-        } else if (ethereum?.selectedProvider?.isCoinbaseWallet) {
-          web3Store.$state.walletInfo.walletType = 'CoinbaseWallet';
-        } else if (ethereum.isMetaMask) {
-          web3Store.$state.walletInfo.walletType = 'MetaMask';
-        }
-
-        web3Store.connectByProvider();
-
-        // listener accounts，chain
-        ethereum.on('accountsChanged', ([account]: string[]) => {
-          if (account) {
-            web3Store.setConnectInfo(account);
-          } else {
-            web3Store.$reset();
-          }
-        });
-        ethereum.on('chainChanged', (_chainId: number) => {
-          setProvider('MetaMask');
-          web3Store.connectByProvider();
-        });
-      }
+    computed: {
+      ...mapState(useEthereumStore, ['accountConnected']),
     },
   });
 </script>
@@ -69,8 +34,10 @@
       width: 100%;
       // overflow: hidden visible;
       .container {
-        padding: 1rem;
-        margin: 0 auto;
+        max-width: 1312px;
+        position: relative;
+        z-index: 2;
+        margin: 24px auto;
       }
     }
   }

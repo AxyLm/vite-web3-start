@@ -11,35 +11,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": [
-      "esnext",
-      "dom",
-      "scripthost"
-    ],
+    "lib": ["esnext", "dom", "scripthost"],
     "skipLibCheck": true,
-    "types": [
-      "unplugin-icons/types/vue",
-      "node"
-    ],
+    "types": ["unplugin-icons/types/vue", "node", "ethers"],
     "paths": {
-      "~/*": [
-        "src/*"
-      ],
-    },
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+      "~/*": ["src/*"]
     }
-  ],
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
+  "exclude": ["dist", "node_modules"]
 }

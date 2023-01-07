@@ -3,12 +3,16 @@ import { BigNumber, ethers, Signer } from 'ethers';
 import { BaseContract } from '~/web3/contracts/base-contract';
 import erc_20_abi from './abis/erc-20.json';
 
-class ERC20 extends BaseContract {
-  async approve(spender: string, amount = ethers.constants.MaxUint256) {
-    const res = await this.write('approve', [spender, amount], {
-      gasLimit: 55762,
-    });
-    return res;
+export class ERC20 extends BaseContract {
+  async setApprove(spender: string, amount = ethers.constants.MaxUint256) {
+    const res = await this.write('approve', [spender, amount], {});
+    const tx = await res.wait(1);
+    return tx;
+  }
+
+  async getAllowance(owner: string, spender: string): Promise<BigNumber> {
+    const result = await this.read('allowance', [owner, spender]);
+    return result;
   }
 
   async getBalanceOf(wallet: string) {
@@ -34,7 +38,7 @@ class ERC20 extends BaseContract {
     return result as number;
   }
 }
-function createERC20(address: string, signerOrProvider?: Signer | Provider) {
-  return new ERC20(address, erc_20_abi, signerOrProvider);
+function createERC20(address: string, provider: Provider, signer?: Signer) {
+  return new ERC20(address, erc_20_abi, provider, signer);
 }
 export { createERC20 };

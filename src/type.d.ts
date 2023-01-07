@@ -11,9 +11,7 @@ interface ImportMetaEnv extends Readonly<Record<string, string>> {
   readonly V_DEV: string;
   readonly V_TITLE: string;
   readonly V_ENV: string;
-  readonly V_SSO_KEY: string;
   readonly V_BASE_URL: string;
-  readonly V_SSO_DOMAIN: string;
 }
 
 interface ImportMeta {
@@ -22,4 +20,9 @@ interface ImportMeta {
 
 interface Window {
   ethereum: any;
+}
+
+declare module 'vue3-popper' {
+  import type { Component } from 'vue';
+  export default Component;
 }

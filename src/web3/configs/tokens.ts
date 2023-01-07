@@ -166,5 +166,34 @@ const bsc_ERC20 = [
     balance: undefined,
   },
 ];
-
 export { eth_ERC20, bsc_ERC20 };
+
+export interface Token {
+  symbol: string;
+  address: string;
+  decimals: number;
+}
+
+export const Tokens: {
+  [key: number]: Token[];
+} = {
+  1: [
+    { symbol: 'USDC', address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', decimals: 6 },
+    { symbol: 'USDT', address: '0xdAC17F958D2ee523a2206206994597C13D831ec7', decimals: 6 },
+  ],
+
+  56: [
+    { symbol: 'USDC', address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', decimals: 18 },
+    { symbol: 'USDT', address: '0x55d398326f99059fF775485246999027B3197955', decimals: 18 },
+  ],
+
+  10: [{ symbol: 'USDC', address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607', decimals: 6 }],
+};
+
+export function getToken(chain: number, symbol: string): Token | undefined {
+  return Tokens[chain].find((e) => e.symbol === symbol);
+}
+
+export function getTokens(chain: number, symbols: string[]): Token[] {
+  return Tokens[chain].filter((e) => symbols.includes(e.symbol));
+}

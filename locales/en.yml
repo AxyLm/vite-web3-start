@@ -1,18 +1,8 @@
-helloWorld: Hello World
 dark: Dark
 light: Light
-toggle: Toggle to {mode}
 
 network: Network
 token: Token
 form: Form
 to: To
 balance: Balance
-
-coming_soon: Coming soon
-
-home:
-  bar_title: Web3 Start
-
-about:
-  bar_title: About

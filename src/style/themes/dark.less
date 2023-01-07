@@ -1,0 +1,18 @@
+@tailwind utilities;
+
+[data-theme='dark'] {
+  background-color: #1c1c1c;
+
+  .el-notification,
+  .perp_notify {
+    background-color: #111111;
+    border: none;
+    .el-notification__content a {
+      color: blue;
+    }
+    .el-notification__title,
+    .el-notification__content {
+      color: rgba(226, 232, 240);
+    }
+  }
+}

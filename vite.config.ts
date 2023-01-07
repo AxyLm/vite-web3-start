@@ -5,8 +5,8 @@ import * as path from 'path';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
 import IconsResolver from 'unplugin-icons/resolver';
-import { VarletUIResolver } from 'unplugin-vue-components/resolvers';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
+import ElementPlus from 'unplugin-element-plus/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,14 +21,18 @@ export default defineConfig({
     },
   },
   server: {
+    fs: {
+      // Allow serving files from one level up to the project root
+      allow: ['./'],
+    },
     host: '0.0.0.0',
-    port: 5173,
+    port: 5273,
     watch: {
-      ignored: ['./config/*', './locales/*'],
+      ignored: ['./config/*', './locales/*', './src/types/*'],
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist-tmp',
     assetsDir: 'assets',
     sourcemap: false,
     manifest: true,
@@ -36,6 +40,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+
     VueI18n({
       runtimeOnly: true,
       compositionOnly: true,
@@ -54,6 +59,9 @@ export default defineConfig({
         networks: FileSystemIconLoader('./src/assets/networks', (svg) =>
           svg.replace(/^<svg /, '<svg fill="currentColor" '),
         ),
+        svg: FileSystemIconLoader('./src/assets/svg', (svg) =>
+          svg.replace(/^<svg /, '<svg fill="currentColor" '),
+        ),
       },
       iconCustomizer(collection, icon, props) {
         // customize this icon in this collection
@@ -67,9 +75,9 @@ export default defineConfig({
         IconsResolver({
           prefix: 'icon',
         }),
-        VarletUIResolver(),
       ],
       dts: 'src/components.d.ts',
     }),
+    ElementPlus(),
   ],
 });

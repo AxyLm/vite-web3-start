@@ -1,35 +1,15 @@
 <template>
-  <!-- <router-view></router-view> -->
-  <Layout />
+  <Web3ProviderContext>
+    <router-view class="h-screen w-screen"></router-view>
+  </Web3ProviderContext>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import Layout from '~/layout/index.vue';
-
+  import Web3ProviderContext from '~/context/web3-provider/index.vue';
   export default defineComponent({
     name: 'App',
     components: {
-      Layout,
+      Web3ProviderContext,
     },
   });
 </script>
-<style lang="less">
-  body,
-  main#root {
-    @apply w-screen  transition-colors dark:bg-base-dark dark:text-base-2;
-  }
-  main#root {
-    font-family: Josefin Sans, sans-serif;
-    font-weight: 300;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    @apply font-normal;
-  }
-
-  .dark {
-    color-scheme: dark;
-    main#root {
-      background-image: url(~/assets/svg/bg-stars.svg);
-    }
-  }
-</style>

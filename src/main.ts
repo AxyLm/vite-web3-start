@@ -1,10 +1,15 @@
-import { createApp } from 'vue';
-import App from './app.vue';
-import './style/index.less';
 import 'tailwindcss/tailwind.css';
+import './style/index.less';
 
+import { createApp } from 'vue';
 const app = createApp(App);
 
-Object.values(import.meta.globEager('./modules/*.ts')).forEach((i) => i.install?.(app));
+import App from './app.vue';
+import { routerInstance } from './router';
+app.use(routerInstance);
+
+
+import { install as PiniaInstall } from './modules/pinia';
+PiniaInstall(app);
 
 app.mount('#root');

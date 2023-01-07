@@ -13,7 +13,7 @@
     "plugin:vue/vue3-strongly-recommended",
     "plugin:vue/vue3-recommended",
     "plugin:prettier/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
   ],
   "parser": "vue-eslint-parser",
   "parserOptions": {
