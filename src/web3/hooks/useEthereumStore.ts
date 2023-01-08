@@ -2,7 +2,6 @@ import { ethers } from 'ethers';
 import { defineStore } from 'pinia';
 import { getProvider } from './web3Provider';
 import { ethAccounts } from '~/web3/hooks/ethereum-metods';
-import { useRoute, useRouter } from 'vue-router';
 import ethereumEmitter from '~/web3/utils/ethereum-event';
 
 interface Network {

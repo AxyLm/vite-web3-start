@@ -12,26 +12,19 @@
   import { mapState } from 'pinia';
   import { defineComponent } from 'vue';
   import { useEthereumStore } from '~/web3/hooks/useEthereumStore';
-  import { useConnectModal } from '~/components/connect-modal/hooks/useConnectorModal';
-  import { MetaMaskConnector } from '~/connectors';
-  import { useBoard } from '~/composables/useBoard';
+  import { useConnectModal } from '~/components/connector-modal/connectors/useConnectorModal';
 
   export default defineComponent({
     name: 'Connector',
     components: {},
 
     setup() {
-      const metaMaskConnector = new MetaMaskConnector({
-        appUrl: 'http://localhost:3000',
-      });
       const { open } = useConnectModal();
 
       const openConnectModal = async () => {
-        // connectStore.open();
         open();
       };
       return {
-        metaMaskConnector,
         openConnectModal,
       };
     },

@@ -6,9 +6,7 @@
   import { connectAccount, setProvider } from '~/web3/hooks/useProvider';
   import { providers } from 'ethers';
   import Logo from './logos/MetaMask.vue';
-  import { MetaMaskProvider } from '~/connectors';
-  import { useBoard } from '~/composables/useBoard';
-  import { useConnectModal } from '~/components/connect-modal/hooks/useConnectorModal';
+  import { useConnectModal } from './useConnectorModal';
 
   export default defineComponent({
     name: 'MetaMaskConnector',
@@ -56,7 +54,7 @@
 
       onBeforeMount(() => {
         if (isAutoConnect.value && typeof window !== 'undefined' && !!window.ethereum) {
-          const provider = window.ethereum as MetaMaskProvider;
+          const provider = window.ethereum;
           if (provider.selectedAddress && !store.accountConnected) {
             connectWallet();
           }
