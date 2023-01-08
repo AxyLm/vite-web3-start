@@ -50,6 +50,15 @@
           <div class="text-2xs cursor-pointer" @click="closeModal">X</div>
         </div>
 
+        <memory-router
+          v-slot="{ history }"
+          :initial-entries="['/']"
+          :initial-index="0"
+          :key-length="6"
+        >
+          <app :history="history" />
+        </memory-router>
+
         <div class="flex flex-col gap-2">
           <MetamaskConnector @account-connected="connected" />
           <walletConnectItem @account-connected="connected" />

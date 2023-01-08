@@ -1,16 +1,29 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import ConnectModal from '~/layout/components/connect/index.vue';
+  import { MetaMaskConnector, WalletConnectConnector } from '~/connectors';
   export default defineComponent({
     name: 'ConnectorContext',
-    components: {
-      ConnectModal,
+    components: {},
+    setup() {
+      const connectors = [
+        new MetaMaskConnector({
+          appUrl: 'http://localhost:3000',
+        }),
+        new WalletConnectConnector({}),
+      ];
+
+      return {
+        connectors,
+      };
     },
   });
 </script>
 <template>
   <slot></slot>
-  <teleport to="body">
-    <ConnectModal />
-  </teleport>
+
+  <board :connectors="connectors" dark>
+    <!-- <template #loading>
+      <div v-if="wallet.status === 'loading'"></div>
+    </template> -->
+  </board>
 </template>

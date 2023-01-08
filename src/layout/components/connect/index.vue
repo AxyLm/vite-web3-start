@@ -13,17 +13,25 @@
   import { defineComponent } from 'vue';
   import { useEthereumStore } from '~/web3/hooks/useEthereumStore';
   import { useConnectModal } from '~/components/connect-modal/hooks/useConnectorModal';
+  import { MetaMaskConnector } from '~/connectors';
+  import { useBoard } from '~/composables/useBoard';
 
   export default defineComponent({
     name: 'Connector',
     components: {},
 
     setup() {
-      const connectStore = useConnectModal();
-      const openConnectModal = () => {
-        connectStore.open();
+      const metaMaskConnector = new MetaMaskConnector({
+        appUrl: 'http://localhost:3000',
+      });
+      const { open } = useConnectModal();
+
+      const openConnectModal = async () => {
+        // connectStore.open();
+        open();
       };
       return {
+        metaMaskConnector,
         openConnectModal,
       };
     },

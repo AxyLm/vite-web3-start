@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { FunctionalComponent, Component } from 'vue';
+export type ConnectionStatus = 'none' | 'connecting' | 'loading' | 'connected';
 
 export const useConnectModal = defineStore(
   'connectorModal', // () => { }
@@ -7,20 +8,19 @@ export const useConnectModal = defineStore(
   {
     state: (): {
       modalActived: boolean;
-      activedComponent?: Component;
+      status: ConnectionStatus;
     } => {
       return {
         modalActived: false,
-        activedComponent: undefined,
+        status: 'none',
       };
     },
 
     actions: {
-      resetRoute() {
-        this.activedComponent = undefined;
+      updateStatus(e: ConnectionStatus) {
+        this.status = e;
       },
       open() {
-        this.resetRoute();
         this.modalActived = true;
       },
       close() {

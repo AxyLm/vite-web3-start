@@ -13,13 +13,16 @@
   import { defineComponent } from 'vue';
   import useEthereumStore from '~/web3/hooks/useEthereumStore';
   import navigation from './navigation.vue';
+  import { useEthers, useWallet } from '~/composables';
   export default defineComponent({
     name: 'Layout',
     components: {
       navigation,
     },
     setup(props, ctx) {
-      return {};
+      const wallet = useWallet();
+      const eth = useEthers();
+      return { wallet, eth };
     },
     computed: {
       ...mapState(useEthereumStore, ['accountConnected']),

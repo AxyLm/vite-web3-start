@@ -28,14 +28,14 @@ export const routerInstance = createRouter({
 });
 
 const beforeEach: NavigationGuard = async (to, from, next) => {
-  try {
-    const store = useEthereumStore();
-    if (!store.accountConnected) {
-      await connectEthereum();
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  //   const store = useEthereumStore();
+  //   if (!store.accountConnected) {
+  //     await connectEthereum();
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  // }
   next();
 };
 
