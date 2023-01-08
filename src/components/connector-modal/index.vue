@@ -38,9 +38,9 @@
     <template v-else-if="status === 'loading'">
       <div class="text-center"> <icon-eos-icons:loading class="my-8 h-6 w-6" /> </div>
     </template>
-    <template v-else-if="status === 'connected'">
+    <!-- <template v-else-if="status === 'connected'">
       <div class="text-center"> <icon-eos-icons:loading class="my-8 h-6 w-6" /> </div>
-    </template>
+    </template> -->
     <template v-else>
       <div class="flex flex-col gap-2">
         <MetaMaskVue />

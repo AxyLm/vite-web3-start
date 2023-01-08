@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { defineStore } from 'pinia';
-import { getProvider } from './web3Provider';
+import { getProvider } from './useProvider';
 import { ethAccounts } from '~/web3/hooks/ethereum-metods';
 import ethereumEmitter from '~/web3/utils/ethereum-event';
 
@@ -54,7 +54,7 @@ export const useEthereumStore = defineStore('ethereum', {
     async updateBalance() {
       if (!this.account) return false;
       this.balance = null;
-      await getProvider()
+      await getProvider()!
         .getBalance(this.account)
         .then((balance) => {
           this.balance = ethers.utils.formatUnits(balance);
@@ -71,7 +71,7 @@ export async function connectEthereum() {
   const ethereumStore = useEthereumStore();
   if (account) {
     const provider = getProvider();
-    const { chainId, name, ensAddress } = await provider.getNetwork();
+    const { chainId, name, ensAddress } = await provider!.getNetwork();
     ethereumStore.connect({
       account,
       network: { chainId, name, ensAddress },

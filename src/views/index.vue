@@ -1,9 +1,11 @@
 <template>
-  <div class="layout max-h-screen overflow-y-auto overflow-x-hidden">
+  <div class="layout max-h-screen overflow-y-auto overflow-x-hidden pt-2">
     <div class="layout-wrap h-full" :style="{}">
       <div v-if="accountConnected">
-        <input v-model="inpu" type="text " />
-        <button class="btn" @click="handClick()">handClick</button>
+        <input v-model="signMsg" type="text " class="input mr-2 outline-none" />
+        <button class="btn-md btn" @click="handClick()">Sign Message</button>
+
+        <input type="textare" :value="sign" class="h-19 w-full" readonly />
       </div>
     </div>
   </div>
@@ -17,39 +19,20 @@
     name: 'Layout',
     components: {},
     setup(props, ctx) {
+      const sign = ref('');
       const handClick = () => {
         const singer = getSinger();
 
-        singer
-          ._signTypedData(
-            {
-              name: 'VirtualWallet',
-              version: '1',
-              chainId: 56,
-              verifyingContract: '0x5Df62ea22d32B36461e8d98Cf803c434346b20d0',
-            },
-            {
-              approve: [
-                { name: 'service', type: 'address' },
-                { name: 'code', type: 'uint' },
-                { name: 'data', type: 'address' },
-              ],
-            },
-            {
-              service: '0x5Df62ea22d32B36461e8d98Cf803c434346b20d0',
-              code: '1153616820367707549345717916247602122976091570196',
-              data: '0x5Df62ea22d32B36461e8d98Cf803c434346b20d0',
-            },
-          )
-          .then((e) => {
-            console.log('e', e);
-          });
+        singer.signMessage(signMsg.value).then((e) => {
+          sign.value = e;
+          console.log('e', e);
+        });
         // getSinger().signMessage(`${inpu.value}`);
         console.log(singer._signTypedData);
       };
 
-      const inpu = ref('123');
-      return { handClick, inpu };
+      const signMsg = ref('signMessage');
+      return { handClick, signMsg, sign };
     },
     computed: {
       ...mapState(useEthereumStore, ['accountConnected', 'account']),

@@ -1,7 +1,7 @@
 <template>
   <button
     v-if="!accountConnected"
-    class="btn-primary btn-sm btn flex items-center rounded-full px-4 text-white"
+    class="btn-primary no-animation btn-sm btn flex h-9 items-center rounded-full px-4 text-white"
     @click="openConnectModal()"
   >
     Connect

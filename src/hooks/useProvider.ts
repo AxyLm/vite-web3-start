@@ -1,7 +1,9 @@
 import { ethers } from 'ethers';
 import { computed, shallowRef } from 'vue';
 
-type Provider = ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider;
+type Provider = ethers.providers.Web3Provider & {
+  request: (request: { method: string; params?: any[] | undefined }) => Promise<any>;
+};
 
 const _provider = shallowRef<Provider>();
 

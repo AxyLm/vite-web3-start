@@ -55,8 +55,8 @@
               relayUrl: 'wss://relay.walletconnect.com',
               projectId: PROJECT_ID,
               metadata: {
-                name: 'Quickswap',
-                description: 'Quickswap of dappos',
+                name: 'dApp Start',
+                description: 'dApp Start',
                 url: window.location.href,
                 icons: ['/favicon.png'],
               },

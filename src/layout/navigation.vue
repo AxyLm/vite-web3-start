@@ -1,5 +1,5 @@
 <template>
-  <header class="header h-22 sm:h-22 flex items-center justify-between px-4 md:px-10">
+  <header class="header flex h-22 items-center justify-between px-4 sm:h-22 md:px-10">
     <div class="bar-title flex items-center">
       <div class="mr-4 inline-block"> </div>
     </div>
@@ -7,7 +7,9 @@
     <div class="flex">
       <Network />
       <template v-if="accountConnected">
-        <div class="btn-primary btn-sm btn flex items-center rounded-full px-4 text-white">
+        <div
+          class="btn-primary no-animation btn-sm btn flex h-9 items-center rounded-full px-4 text-white"
+        >
           <span>{{ account }}</span>
         </div>
       </template>

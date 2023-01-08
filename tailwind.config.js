@@ -60,6 +60,7 @@ module.exports = {
       15: '3.75rem',
       17.5: '4.375rem', // 70px
       18: '4.5rem', // 72px
+      22: '5.5rem', // 88px
       25: '6.25rem', // 100px
       27: '6.75rem', // 108px
       37.5: '9.375rem', // 150px
@@ -120,27 +121,7 @@ module.exports = {
   },
   variants: {},
   daisyui: {
-    themes: [
-      'light',
-      {
-        light: {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
-          ...require('daisyui/src/colors/themes')['[data-theme=light]'],
-          // 'base-100': '#faf5fa',
-
-          primary: '#7cdf91',
-          'primary-content': '#F8FAFC',
-          '--rounded-btn': '.5rem',
-        },
-        dark: {
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
-          ...require('daisyui/src/colors/themes')['[data-theme=night]'],
-          primary: '#7cdf91',
-          'primary-content': '#F8FAFC',
-          '--rounded-btn': '.5rem',
-        },
-      },
-    ],
+    themes: ['light', 'dark'],
   },
   plugins: [require('daisyui')],
 };
