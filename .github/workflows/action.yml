@@ -30,7 +30,6 @@ jobs:
       - name: Install package and Build 🔧
         run: |
           pnpm install
-          pnpm run build
 
       - name: Build 🔧
         run: |
