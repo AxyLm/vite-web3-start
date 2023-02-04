@@ -1,33 +1,69 @@
 {
+  "_es-85ca94d5.js": {
+    "file": "assets/es-85ca94d5.js"
+  },
+  "_vue-5d97a9a0.js": {
+    "file": "assets/vue-5d97a9a0.js"
+  },
+  "index.css": {
+    "file": "assets/index-eade0317.css",
+    "src": "index.css"
+  },
   "index.html": {
-    "file": "assets/index.036c74b8.js",
-    "src": "index.html",
-    "isEntry": true,
-    "dynamicImports": [
-      "src/views/home/index.vue",
-      "src/views/about/index.vue"
+    "assets": [
+      "assets/bg-stars-01c8511c.svg"
     ],
     "css": [
-      "assets/index.c80752ae.css"
+      "assets/index-eade0317.css"
     ],
-    "assets": [
-      "assets/bg-stars.01c8511c.svg"
-    ]
-  },
-  "src/views/home/index.vue": {
-    "file": "assets/index.db11fcd0.js",
-    "src": "src/views/home/index.vue",
-    "isDynamicEntry": true,
+    "dynamicImports": [
+      "src/views/layout/index.vue",
+      "src/views/pages/wallet/index.vue"
+    ],
+    "file": "assets/index-e3334da4.js",
     "imports": [
-      "index.html"
-    ]
+      "_vue-5d97a9a0.js",
+      "_es-85ca94d5.js"
+    ],
+    "isEntry": true,
+    "src": "index.html"
   },
-  "src/views/about/index.vue": {
-    "file": "assets/index.2f291890.js",
-    "src": "src/views/about/index.vue",
-    "isDynamicEntry": true,
+  "src/assets/imgs/bg-stars.svg": {
+    "file": "assets/bg-stars-01c8511c.svg",
+    "src": "src/assets/imgs/bg-stars.svg"
+  },
+  "src/views/layout/index.css": {
+    "file": "assets/index-b94e6499.css",
+    "src": "src/views/layout/index.css"
+  },
+  "src/views/layout/index.vue": {
+    "css": [
+      "assets/index-b94e6499.css"
+    ],
+    "file": "assets/index-ca4ff7a7.js",
     "imports": [
-      "index.html"
-    ]
+      "_vue-5d97a9a0.js",
+      "index.html",
+      "_es-85ca94d5.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/views/layout/index.vue"
+  },
+  "src/views/pages/wallet/index.css": {
+    "file": "assets/index-59ec6942.css",
+    "src": "src/views/pages/wallet/index.css"
+  },
+  "src/views/pages/wallet/index.vue": {
+    "css": [
+      "assets/index-59ec6942.css"
+    ],
+    "file": "assets/index-7aaa35af.js",
+    "imports": [
+      "_vue-5d97a9a0.js",
+      "index.html",
+      "_es-85ca94d5.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/views/pages/wallet/index.vue"
   }
 }
