@@ -1,9 +1,12 @@
 {
-  "_es-85ca94d5.js": {
-    "file": "assets/es-85ca94d5.js"
+  "_dijkstra-59d11638.js": {
+    "file": "assets/dijkstra-59d11638.js"
   },
-  "_vue-5d97a9a0.js": {
-    "file": "assets/vue-5d97a9a0.js"
+  "_es-a9c9a203.js": {
+    "file": "assets/es-a9c9a203.js"
+  },
+  "_vue-f54ef53e.js": {
+    "file": "assets/vue-f54ef53e.js"
   },
   "index.css": {
     "file": "assets/index-eade0317.css",
@@ -20,10 +23,10 @@
       "src/views/layout/index.vue",
       "src/views/pages/wallet/index.vue"
     ],
-    "file": "assets/index-e3334da4.js",
+    "file": "assets/index-43e1755e.js",
     "imports": [
-      "_vue-5d97a9a0.js",
-      "_es-85ca94d5.js"
+      "_vue-f54ef53e.js",
+      "_es-a9c9a203.js"
     ],
     "isEntry": true,
     "src": "index.html"
@@ -33,18 +36,19 @@
     "src": "src/assets/imgs/bg-stars.svg"
   },
   "src/views/layout/index.css": {
-    "file": "assets/index-b94e6499.css",
+    "file": "assets/index-e52e3e81.css",
     "src": "src/views/layout/index.css"
   },
   "src/views/layout/index.vue": {
     "css": [
-      "assets/index-b94e6499.css"
+      "assets/index-e52e3e81.css"
     ],
-    "file": "assets/index-ca4ff7a7.js",
+    "file": "assets/index-a06e121d.js",
     "imports": [
-      "_vue-5d97a9a0.js",
+      "_vue-f54ef53e.js",
       "index.html",
-      "_es-85ca94d5.js"
+      "_es-a9c9a203.js",
+      "_dijkstra-59d11638.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/layout/index.vue"
@@ -57,11 +61,12 @@
     "css": [
       "assets/index-59ec6942.css"
     ],
-    "file": "assets/index-7aaa35af.js",
+    "file": "assets/index-6d2be65d.js",
     "imports": [
-      "_vue-5d97a9a0.js",
+      "_vue-f54ef53e.js",
+      "_dijkstra-59d11638.js",
       "index.html",
-      "_es-85ca94d5.js"
+      "_es-a9c9a203.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/pages/wallet/index.vue"
