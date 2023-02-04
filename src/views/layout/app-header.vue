@@ -1,6 +1,6 @@
 <template>
   <header
-    class="header sticky top-0 z-20 inset-x-0 flex items-center justify-between px-4 sm:h-20 sm:px-7.5 xl:px-10 border-b border-b-white/5"
+    class="header sticky inset-x-0 top-0 z-20 flex items-center justify-between border-b border-b-white/5 px-4 sm:h-20 sm:px-7.5 xl:px-10"
   >
     <div class="flex items-center gap-2">
       <router-link to="/">
@@ -28,13 +28,13 @@
         <network />
       </template>
       <template v-else>
-        <!-- <button
-          class= h-9 items-center rounded-md border bg-transparent px-2 text-sm leading-9 dark:border-white/20 sm:flex sm:px-4"
+        <button
+          class="h-9 items-center rounded-md border bg-transparent px-2 text-sm leading-9 dark:border-white/20 sm:flex sm:px-4"
           @click="connectWallet()"
         >
           <icon-cil:wallet class="mr-2 inline" />
           <span>Connect Wallet</span>
-        </button> -->
+        </button>
       </template>
 
       <a href="https://github.com/AxyLm/vite-web3-start" target="_blank" class="block">
@@ -49,8 +49,9 @@
   import { EthereumStore } from '~/stores/ethereum.store';
   import { mapState } from 'pinia';
   import network from '~/views/components/network.vue';
-  import { connectAccount } from '~/modules/connector/metamask-connect';
+  import { MetaMaskStore, WalletConnectStore, switchChain } from '~/modules/connector';
   import Favicon from '~icons/logo/favicon.svg';
+import { ChainIds } from '~/constants/enums/chain-id';
   export default defineComponent({
     name: 'AppHeader',
     components: {
@@ -58,12 +59,18 @@
       Favicon,
     },
     setup() {
+      MetaMaskStore();
       const connectWallet = () => {
-        connectAccount();
+        // WalletConnectStore()
+        //   .init()
+        //   .finally(() => {
+        //     WalletConnectStore().requestConnection();
+        //   });
+        MetaMaskStore().requestConnect();
       };
 
       const switchNetwork = () => {
-        // store.connectors.switchChain(ChainIds.BSC);
+        switchChain(ChainIds.BSC);
       };
 
       const addressFilter = (adr?: string) => {

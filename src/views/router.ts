@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, NavigationGuard, RouteRecordRaw } from 'vue-router';
-import { connectEthereum } from '~/modules/connector/metamask-connect';
+import { MetaMaskStore } from '~/modules/connector';
 import { useEthereumStore } from '~/stores/ethereum.store';
 
 const routes: RouteRecordRaw[] = [
@@ -33,7 +33,7 @@ const beforeEach: NavigationGuard = async (to, from, next) => {
   try {
     const { ethereumState } = useEthereumStore();
     if (!ethereumState.accountConnected.value) {
-      await connectEthereum();
+      // MetaMaskStore();
     }
   } catch (error) {
     console.log(error);

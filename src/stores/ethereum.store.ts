@@ -1,10 +1,8 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref, shallowRef } from 'vue';
-import { MetaMaskConnector } from '~/modules/connector/metamask';
 import { useBalance } from '~/stores/hooks/use-balance';
 import { useConnectedNetwork } from '~/stores/hooks/use-network';
 
-export const connector = shallowRef<MetaMaskConnector>();
 
 export const EthereumStore = defineStore('EthereumStore', () => {
   const account = ref<string>();
@@ -19,6 +17,7 @@ export const EthereumStore = defineStore('EthereumStore', () => {
   const reset = () => {
     account.value = undefined;
     balance.value = undefined;
+    connectNetwork.network = undefined;
   };
 
   const accountConnected = computed(() => {

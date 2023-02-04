@@ -1,204 +1,197 @@
-// import { ref, shallowRef, watchSyncEffect } from 'vue';
-// import UniversalProvider from '@walletconnect/universal-provider';
-// import QRCodeModal from '@walletconnect/qrcode-modal';
-// import { useProvider } from '~/composables/use-provider';
-// import { ethers } from 'ethers';
-// import { useAccounts } from '~/composables/use-account';
-// import { Address } from 'abitype';
+import { ethers } from 'ethers';
+import { defineStore, storeToRefs } from 'pinia';
+import { ref, computed, watch, shallowRef } from 'vue';
+import SignClient from '@walletconnect/sign-client';
+import QRCodeModal from '@walletconnect/qrcode-modal';
+import UniversalProvider from '@walletconnect/universal-provider';
+import { useConnectedNetwork } from '~/stores/hooks/use-network';
+import { useEthereumStore } from '~/stores/ethereum.store';
+import { useProvider } from '~/composables/use-provider';
 
-// const PROJECT_ID = '';
+const PROJECT_ID = '58ab318eb4080a7a4e53297a62ebd861';
 
-// const UniversalProviderOpts = {
-//   logger: 'warn',
-//   relayUrl: 'wss://relay.walletconnect.com',
-//   projectId: PROJECT_ID,
-//   metadata: {
-//     name: 'Moseu',
-//     description: '',
-//     url: window.location.href,
-//     icons: ['/favicon.png'],
-//   },
-// };
+export enum WalletConnectEvents {
+  CONNECT = 'connect',
+  DISPLAY_URI = 'display_uri',
+  DISCONNECT = 'disconnect',
 
-// const namespance = {
-//   eip155: {
-//     methods: [
-//       'eth_accounts',
-//       'eth_sendTransaction',
-//       'eth_signTransaction',
-//       'eth_sign',
-//       'personal_sign',
-//       'eth_signTypedData',
-//       '_signTypedData',
-//       'eth_signTypedData_v4',
-//     ],
-//     chains: ['eip155:56'],
-//     events: ['chainChanged', 'accountsChanged'],
-//     rpcMap: {
-//       56: `https://rpc.walletconnect.com?chainId=eip155:56&projectId=${PROJECT_ID}`,
-//     },
-//   },
-// };
+  CHAIN_CHANGE = 'chainChanged',
+  ACCOUNT_CHANGE = 'accountsChanged',
+}
+const namespance = {
+  eip155: {
+    methods: [
+      'eth_accounts',
+      'eth_sendTransaction',
+      'eth_signTransaction',
+      'eth_sign',
+      'personal_sign',
+      'eth_signTypedData',
+      '_signTypedData',
+      'eth_signTypedData_v4',
+    ],
+    chains: ['eip155:56','eip155:1'],
+    events: ['chainChanged', 'accountsChanged'],
+    rpcMap: {
+      // 56: `https://rpc.walletconnect.com?chainId=eip155:56&projectId=${PROJECT_ID}`,
 
-// const universalProvider = shallowRef<UniversalProvider>();
+      // TODO: set provider rpc
+      56: 'https://rpc.ankr.com/bsc',
+      1: 'https://eth.rpc.blxrbdn.com	',
+    },
+  },
+};
 
-// export enum WalletConnectEvents {
-//   CONNECT = 'connect',
-//   DISPLAY_URI = 'display_uri',
-//   DISCONNECT = 'disconnect',
-//   CALL_REQUEST = 'call_request',
-//   SESSION_REQUEST = 'session_request',
-//   SESSION_UPDATE = 'session_update',
-//   WC_SESSION_REQUEST = 'wc_sessionRequest',
-//   WC_SESSION_UPDATE = 'wc_sessionUpdate',
-// }
+const singClientOption = {
+  // relayUrl: 'wss://relay.walletconnect.com',
+  projectId: PROJECT_ID,
+  metadata: {
+    name: 'Vite Start',
+    description: 'vite web3 dapp start',
+    url: window.location.host,
+    icons: [`${window.location.origin}/favicon.svg`],
+  },
+};
 
-// export const useWalletConnect = () => {
-//   const [_, setProvider] = useProvider();
+export const WalletConnectStore = defineStore('WalletConnectStore', () => {
+  const connectUri = ref<string | null>(null);
 
-//   watchSyncEffect(async () => {
-//     if (universalProvider.value) {
-//       console.log('111');
+  const client = shallowRef<SignClient>();
+  const universalProvider = shallowRef<UniversalProvider>();
+  const initialized = computed(() => !!universalProvider.value);
+  const { ethereumStore, ethereumState } = useEthereumStore();
+  const networkStore = useConnectedNetwork();
 
-//       universalProvider.value.on(WalletConnectEvents.SESSION_REQUEST, (e: any) => {
-//         console.log(WalletConnectEvents.SESSION_REQUEST, e);
-//       });
-//       universalProvider.value.on(WalletConnectEvents.SESSION_UPDATE, (e: any) => {
-//         console.log(WalletConnectEvents.SESSION_UPDATE, e);
-//       });
+  // reactive auth error
+  const error = ref<string | null>(null);
+  const { setProvider } = useProvider();
 
-//       universalProvider.value.on(WalletConnectEvents.DISCONNECT, () => {
-//         console.log('disconnect');
-//         setProvider(undefined);
-//       });
-//       universalProvider.value.on(WalletConnectEvents.CONNECT, () => {
-//         if (universalProvider.value) {
-//           const web3Provider = new ethers.providers.Web3Provider(universalProvider.value!);
-//           setProvider(web3Provider);
-//         }
-//       });
-//     }
-//   });
+  const setError = (e: unknown) => {
+    error.value = e?.toString() ?? null;
+    console.error(e);
+  };
 
-//   const initLoading = ref(false);
-//   async function initClient() {
-//     initLoading.value = true;
+  // Init client and listen to auth events
+  const init = async () => {
+    const signClient = await SignClient.init(singClientOption).catch((e) => {
+      setError(e);
+      return e;
+    });
+    client.value = signClient;
+    await UniversalProvider.init({ client: signClient })
+      .then((e) => {
+        universalProvider.value = e;
+      })
+      .catch((e) => {
+        setError(e);
+        return e;
+      });
+  };
 
-//     try {
-//       const cli = await UniversalProvider.init(UniversalProviderOpts);
-//       universalProvider.value = cli;
-//       await cli
-//         .disconnect()
-//         .catch((e) => {
-//           console.log('no conneted');
-//         })
-//         .finally(() => {
-//           awaitConnect().finally(() => {
-//             initLoading.value = false;
-//           });
-//         });
-//       //   const web3Provider = new ethers.providers.Web3Provider(universalProvider.value);
+  watch(universalProvider, () => {
+    if (!universalProvider.value) {
+      return;
+    }
 
-//       //   const signer = web3Provider.getSigner();
+    console.log('linster');
+    universalProvider.value.on(WalletConnectEvents.DISPLAY_URI, (e: string) => {
+      connectUri.value = e;
+      QRCodeModal.open(e, () => {
+        console.log('EVENT', 'QR Code Modal closed');
+      });
+    });
 
-//       //   console.log(web3Provider.getSigner());
+    universalProvider.value.client.on('session_delete', (e) => {
+      console.log('session_delete');
+      setProvider(undefined);
+      ethereumStore.reset();
+    });
 
-//       //   if (signer) {
-//       //     setProvider(web3Provider);
+    universalProvider.value.client.on('session_ping', (e) => {
+      console.log('session_ping');
+      console.log(e);
+    });
 
-//       //     const account = await signer.getAddress();
-//       //     const accountStore = useAccounts();
-//       //     const { accounts } = storeToRefs(accountStore);
+    universalProvider.value.client.on('session_update', async (e) => {
+      console.log('session_update');
+      console.log(e);
 
-//       //     accounts.value = [account as Address];
+      if (universalProvider.value) {
+        const web3Provider = new ethers.providers.Web3Provider(universalProvider.value);
+        setProvider(web3Provider);
 
-//       //     initLoading.value = false;
-//       //   } else {
-//       //     console.log(universalProvider.value);
-//       //     universalProvider.value.connect({ namespaces: namespance }).then((e) => {
-//       //       setProvider(web3Provider);
-//       //       setAccounts();
-//       //       QRCodeModal.close();
-//       //     });
-//       //     universalProvider.value.on(WalletConnectEvents.DISPLAY_URI, (e: string) => {
-//       //       QRCodeModal.open(e, () => {
-//       //         initLoading.value = false;
-//       //         console.log('EVENT', 'QR Code Modal closed');
-//       //       });
-//       //     });
+        // const provider = new ethers.providers.Web3Provider(client.value)
+        const account = await web3Provider.getSigner().getAddress();
+        if (account) {
+          ethereumState.account.value = account;
+          const { chainId } = await web3Provider.getNetwork();
+          networkStore.setNetwork(chainId);
+        } else {
+          ethereumStore.reset();
+        }
+      } else {
+        ethereumStore.reset();
+      }
+    });
 
-//       //     universalProvider.value.on(WalletConnectEvents.CONNECT, (e: string) => {
-//       //       initLoading.value = false;
-//       //       QRCodeModal.close();
-//       //     });
+    universalProvider.value.on(WalletConnectEvents.CONNECT, async (e: string) => {
+      const web3Provider = new ethers.providers.Web3Provider(universalProvider.value!);
+      setProvider(web3Provider);
 
-//       //     // setTimeout(() => {
-//       //     //   if (accounts.length > 0) return;
-//       //     //   cli.disconnect();
-//       //     //   initLoading.value = false;
-//       //     //   throw Error('[initClient] connect timeout');
-//       //     // }, 1000 * 10);
-//       //   }
-//     } catch (error) {
-//       console.log('[useWalletConnect] initClient \n', error);
-//       initLoading.value = false;
-//     }
+      // const provider = new ethers.providers.Web3Provider(client.value)
+      const account = await web3Provider.getSigner().getAddress();
+      if (account) {
+        ethereumState.account.value = account;
+        const { chainId } = await web3Provider.getNetwork();
+        networkStore.setNetwork(chainId);
+      } else {
+        ethereumStore.reset();
+      }
+      QRCodeModal.close();
+    });
+  });
 
-//     return universalProvider.value;
-//   }
+  const reset = async () => {
+    connectUri.value = null;
+    error.value = null;
+    if (universalProvider.value) {
+      await universalProvider.value.disconnect();
+    }
+  };
 
-//   async function awaitConnect() {
-//     if (!universalProvider.value) throw Error('[disconnect] client not found');
-//     const web3Provider = new ethers.providers.Web3Provider(universalProvider.value);
+  const requestConnection = async () => {
+    if (!universalProvider.value) {
+      return;
+    }
+    await universalProvider.value.disconnect().finally(
+      () =>
+        universalProvider.value &&
+        universalProvider.value.connect({ namespaces: namespance }).catch((e) => {
+          setError(e);
+          return e;
+        }),
+    );
+  };
 
-//     universalProvider.value.connect({ namespaces: namespance }).then(async (e) => {
-//       setProvider(web3Provider);
-//       const accounts = await universalProvider.value?.enable();
-//       const accountStore = useAccounts();
-//       accountStore.accounts = accounts as Address[];
-//       QRCodeModal.close();
-//     });
-//     universalProvider.value.on(WalletConnectEvents.DISPLAY_URI, (e: string) => {
-//       QRCodeModal.open(e, () => {
-//         initLoading.value = false;
-//       });
-//     });
+  return {
+    client,
+    universalProvider,
+    connectUri,
+    initialized,
+    error,
 
-//     universalProvider.value.on(WalletConnectEvents.CONNECT, (e: string) => {
-//       initLoading.value = false;
-//       QRCodeModal.close();
-//     });
-//   }
+    init,
+    reset,
 
-//   async function disconnect() {
-//     if (!universalProvider.value) throw Error('[disconnect] client not found');
-//     const [_, setProvider] = useProvider();
+    requestConnection,
+  };
+});
 
-//     await universalProvider.value.disconnect().finally(() => {
-//       setProvider(undefined);
-//     });
-//   }
-
-//   async function setAccounts() {
-//     if (!universalProvider.value) {
-//       initLoading.value = false;
-//       return;
-//     }
-//     const [_, setProvider] = useProvider();
-//     setProvider(new ethers.providers.Web3Provider(universalProvider.value));
-//     const accountStore = useAccounts();
-//     await accountStore.requestAccounts().finally(() => {
-//       console.log(accountStore.accounts);
-//       initLoading.value = false;
-//     });
-//   }
-
-//   return {
-//     universalProvider,
-//     initLoading,
-//     initClient,
-//     disconnect,
-//   };
-// };
-
-export {};
+export const useWalletConnectStore = () => {
+  const walletConnectStore = WalletConnectStore();
+  const walletConnectState = storeToRefs(walletConnectStore);
+  return {
+    walletConnectStore,
+    walletConnectState,
+  };
+};

@@ -3,6 +3,7 @@
     <button
       v-if="accountConnected"
       class="hidden h-9 items-center rounded-md border bg-transparent px-4 text-sm leading-9 dark:border-white/20 dark:hover:bg-opacity-60 sm:flex"
+      @click="switchNetwork()"
     >
       <IconBnb v-if="network?.chainId == '0x38'" class="mr-2 inline" />
       <span class="">{{ network?.chainName }}</span>
@@ -20,6 +21,8 @@
   import { EthereumStore } from '~/stores/ethereum.store';
   import { mapState } from 'pinia';
   import IconBnb from '~icons/coin/bnb-chain';
+  import { ChainIds } from '~/constants/enums/chain-id';
+  import { switchChain } from '~/modules/connector';
   export default defineComponent({
     name: 'Network',
     components: {
@@ -27,7 +30,11 @@
     },
     setup() {
       // && network?.chainId == '0x38'"
-      return {};
+
+      const switchNetwork = () => {
+        switchChain(ChainIds.ETHEREUM);
+      };
+      return { switchNetwork };
     },
     computed: {
       ...mapState(EthereumStore, ['accountConnected', 'account', 'balance', 'network']),
