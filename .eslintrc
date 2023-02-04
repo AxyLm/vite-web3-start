@@ -31,7 +31,7 @@
       {
         "avoidEscape": true
       }
-    ], // 使用单引号
+    ],
     "vue/multi-word-component-names": 0,
     "vue/max-attributes-per-line": [
       "warn",

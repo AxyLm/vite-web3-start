@@ -8,19 +8,19 @@ A use Vue 3 + Typescript + Vite web3 Dapp start template, use metamask connect. 
 
 ## TODO
 
-- [ ] wallet connect
+<!-- - [ ] wallet connect
   - [x] Metamask
   - [x] Coinbase Wallet
   - [x] TokenPocket
   - [ ] WalletConnect
-  - [ ] more...
+  - [ ] more... -->
 - [ ] Support Network
   - [x] Ethereum
   - [x] BNB Chain
   - [ ] Support for more networks..
-- [ ] Transfer
+<!-- - [ ] Transfer
   - [x] ui style
-  - [ ] Transfer assets from bsc to eth, No commissions!!
+  - [ ] Transfer assets from bsc to eth, No commissions!! -->
 
 ## Start
 
@@ -29,13 +29,13 @@ A use Vue 3 + Typescript + Vite web3 Dapp start template, use metamask connect. 
 Just run and visit [http://localhost:5173/](http://localhost:5173/)
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ### build
 
 ```bash
-yarn build
+pnpm build
 ```
 
 ### Deploy on you git pages

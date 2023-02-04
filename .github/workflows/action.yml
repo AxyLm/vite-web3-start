@@ -22,10 +22,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 6.0.2
+
       - name: Install package and Build 🔧
         run: |
-          npm install
-          npm run build
+          pnpm install
+          pnpm run build
+
+      - name: Build 🔧
+        run: |
+          pnpm run build
           cp dist/index.html dist/404.html # vue-router history mode
 
       - name: Deploy 🚀

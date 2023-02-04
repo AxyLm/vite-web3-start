@@ -5,7 +5,6 @@ import * as path from 'path';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
 import IconsResolver from 'unplugin-icons/resolver';
-import { VarletUIResolver } from 'unplugin-vue-components/resolvers';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 // https://vitejs.dev/config/
@@ -17,6 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '~views/': `${path.resolve(__dirname, './src/views')}/`,
       '~/': `${path.resolve(__dirname, './src')}/`,
     },
   },
@@ -27,38 +27,52 @@ export default defineConfig({
       ignored: ['./config/*', './locales/*'],
     },
   },
+  esbuild: {
+    pure: ['console.log'],
+  },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: false,
+    sourcemap: process.env.NODE_ENV != 'production',
     manifest: true,
     chunkSizeWarningLimit: 533,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          es: ['ethers'],
+          vue: ['vue', 'vue-router'],
+          // ui: ['@headlessui/vue', 'tailwindcss', 'daisyui'],
+          // store: [
+          //   'pinia',
+          //   'src/stores/app-setting.store.ts',
+          //   'src/stores/ethereum.store.ts',
+          //   'src/stores/use-account-balance.ts',
+          // ],
+        },
+      },
+    },
   },
   plugins: [
     vue(),
-    VueI18n({
-      runtimeOnly: true,
-      compositionOnly: true,
-      include: [path.resolve(__dirname, 'locales/**')],
-    }),
+    // VueI18n({
+    //   include: [path.resolve(__dirname, 'locales/**')],
+    // }),
     Icons({
-      scale: 1,
-      defaultStyle: '', // Style apply to icons
-      defaultClass: 'icon inline', // Class names apply to icons
+      scale: 1.2,
       autoInstall: true,
       compiler: 'vue3',
       customCollections: {
-        coins: FileSystemIconLoader('./src/assets/coins', (svg) =>
+        logo: FileSystemIconLoader('./src/assets/logo', (svg) =>
           svg.replace(/^<svg /, '<svg fill="currentColor" '),
         ),
-        networks: FileSystemIconLoader('./src/assets/networks', (svg) =>
+        coin: FileSystemIconLoader('./src/assets/coins', (svg) =>
           svg.replace(/^<svg /, '<svg fill="currentColor" '),
         ),
       },
       iconCustomizer(collection, icon, props) {
         // customize this icon in this collection
-        if (['coins', 'networks'].includes(collection)) {
-          props.class = 'icon h-6 w-6 inline align-text-bottom';
+        if (['logo', 'coin'].includes(collection)) {
+          props.class = 'icon inline ';
         }
       },
     }),
@@ -67,9 +81,9 @@ export default defineConfig({
         IconsResolver({
           prefix: 'icon',
         }),
-        VarletUIResolver(),
       ],
       dts: 'src/components.d.ts',
+      dirs: ['src/views/components/'],
     }),
   ],
 });

@@ -3,24 +3,44 @@ const colors = require('tailwindcss/colors');
 
 module.exports = {
   mode: 'jit',
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'], // build时删除未使用的类名
-  safelist: [
-    'bg-blue-500',
-    'text-center',
-    'hover:opacity-100',
-    'lg:text-right',
-    'align-text-bottom',
-    'inline',
-  ], // 将特定类列入安全列表 （no delete）
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  safelist: ['text-center', 'align-text-bottom', 'inline'],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
       boxShadow: ['dark'],
+      spacing: {
+        7.5: '1.875rem', // 30px
+      },
+      fontSize: {
+        xs: '12px',
+        sm: '14px',
+        md: '16px',
+        lg: '18px',
+        xl: '20px',
+        '2xl': '22px',
+        '3xl': '24px',
+        '4xl': '26px',
+        15: '15px',
+        28: '28px',
+        30: '30px',
+        32: '32px',
+        34: '34px',
+        64: '64px',
+      },
+      lineHeight: {
+        48: '48px',
+      },
     },
     colors: {
-      // Build your palette here
       transparent: 'transparent',
       current: 'currentColor',
+      black: colors.black,
+      white: colors.white,
+      gray: colors.gray,
+      indigo: colors.indigo,
+      red: colors.rose,
+      yellow: colors.amber,
       base: {
         DEFAULT: '#fafafa',
         light: '#fafafa',
@@ -39,29 +59,11 @@ module.exports = {
         12: '#141414',
         13: '#000000',
       },
-      skin: colors.blue,
-      gray: colors.gray,
-      trueGray: colors.neutral,
-      red: colors.red,
-      sky: colors.sky,
-      blue: {
-        DEFAULT: '#2f54eb',
-        light: '#2f54eb',
-        dark: '#597ef7',
-        1: '#f0f5ff',
-        2: '#d6e4ff',
-        3: '#adc6ff',
-        4: '#85a5ff',
-        5: '#597ef7',
-        6: '#2f54eb',
-        7: '#1d39c4',
-        8: '#10239e',
-        9: '#061178',
-      },
-      yellow: colors.amber,
-      c: {
-        SHAYUHUI: '#34333b',
-        ANLANZI: '#131124',
+
+      second: {
+        avax: '#e84143',
+        error: '#fa3c58',
+        success: '#0ecc83',
       },
     },
     boxShadowDark: {
@@ -79,5 +81,16 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  daisyui: {
+    themes: [
+      // 'light',
+      {
+        dark: {
+          'color-scheme': 'dark',
+          primary: '#2d42fc',
+        },
+      },
+    ],
+  },
+  plugins: [require('daisyui')],
 };
