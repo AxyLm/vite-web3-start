@@ -2,7 +2,7 @@
   import { mapState, storeToRefs } from 'pinia';
   import { defineComponent, defineProps, PropType, ref, computed, reactive } from 'vue';
   import { ChainIds } from '~/constants/enums/chain-id';
-  import { connectAccount, switchChain } from '~/modules/connector/metamask-connect';
+  import { MetaMaskStore, switchChain } from '~/modules/connector';
   import { EthereumStore } from '~/stores/ethereum.store';
   export default defineComponent({
     name: 'SwitchEthereumChain',
@@ -65,9 +65,11 @@
     connectLoading.value = true;
 
     if (isNeedConnect.value) {
-      connectAccount().finally(() => {
-        connectLoading.value = false;
-      });
+      MetaMaskStore()
+        .requestConnect()
+        .finally(() => {
+          connectLoading.value = false;
+        });
     }
 
     if (isNeedSwitchChain.value) {
