@@ -1,89 +1,52 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import VueI18n from '@intlify/vite-plugin-vue-i18n';
-import * as path from 'path';
-import Icons from 'unplugin-icons/vite';
-import Components from 'unplugin-vue-components/vite';
-import IconsResolver from 'unplugin-icons/resolver';
-import { FileSystemIconLoader } from 'unplugin-icons/loaders';
-
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import * as path from 'path'
+import IconsResolver from 'unplugin-icons/resolver'
+import Icons from 'unplugin-icons/vite'
+import { FileSystemIconLoader } from 'unplugin-icons/loaders'
+import { resolve } from 'path'
+import AutoImport from 'unplugin-auto-import/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [require('postcss-import'), require('tailwindcss'), require('autoprefixer')],
-    },
-  },
   resolve: {
     alias: {
-      '~views/': `${path.resolve(__dirname, './src/views')}/`,
-      '~/': `${path.resolve(__dirname, './src')}/`,
+      '@': path.resolve(__dirname, './src'),
     },
+  },
+  define: {
+    __APP_VERSION__: new Date().getTime(),
   },
   server: {
     host: '0.0.0.0',
-    port: 5173,
-    watch: {
-      ignored: ['./config/*', './locales/*'],
-    },
+    port: 6173,
   },
   esbuild: {
-    pure: ['console.log'],
+    pure: ['console.log', 'console.debug'],
   },
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: process.env.NODE_ENV != 'production',
-    manifest: true,
-    chunkSizeWarningLimit: 533,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          es: ['ethers'],
-          vue: ['vue', 'vue-router'],
-          // ui: ['@headlessui/vue', 'tailwindcss', 'daisyui'],
-          // store: [
-          //   'pinia',
-          //   'src/stores/app-setting.store.ts',
-          //   'src/stores/ethereum.store.ts',
-          //   'src/stores/use-account-balance.ts',
-          // ],
-        },
-      },
-    },
+    target: 'esnext',
+  },
+  optimizeDeps: {
+    include: ['react-dom'],
   },
   plugins: [
-    vue(),
-    // VueI18n({
-    //   include: [path.resolve(__dirname, 'locales/**')],
-    // }),
+    react(),
     Icons({
-      scale: 1.2,
+      compiler: 'jsx',
+      jsx: 'react',
       autoInstall: true,
-      compiler: 'vue3',
-      customCollections: {
-        logo: FileSystemIconLoader('./src/assets/logo', (svg) =>
-          svg.replace(/^<svg /, '<svg fill="currentColor" '),
-        ),
-        coin: FileSystemIconLoader('./src/assets/coins', (svg) =>
-          svg.replace(/^<svg /, '<svg fill="currentColor" '),
-        ),
-      },
-      iconCustomizer(collection, icon, props) {
-        // customize this icon in this collection
-        if (['logo', 'coin'].includes(collection)) {
-          props.class = 'icon inline ';
-        }
-      },
+
     }),
-    Components({
+    AutoImport({
+      imports: ['react'],
+      dts: './src/auto-imports.d.ts',
       resolvers: [
         IconsResolver({
-          prefix: 'icon',
+          prefix: 'i',
+          componentPrefix: 'Icon',
+          extension: 'jsx',
         }),
       ],
-      dts: 'src/components.d.ts',
-      dirs: ['src/views/components/'],
     }),
   ],
-});
+})

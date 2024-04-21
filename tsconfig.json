@@ -1,32 +1,40 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "target": "esnext",
+    "target": "ESNext",
     "useDefineForClassFields": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "esModuleInterop": true,
-    "lib": ["esnext", "dom", "scripthost"],
-    "skipLibCheck": true,
-    "types": ["unplugin-icons/types/vue", "node", "ethers"],
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
     "paths": {
-      "~views/*": ["./src/views/*"],
-      "~/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "unplugin-icons/types/react",
+    ]
   },
   "include": [
-    "./src/components.d.ts",
-    "./src/type.d.ts",
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "vite.config.ts"
+    "src"
   ],
-  "exclude": ["dist", "node_modules"]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
